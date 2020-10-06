@@ -187,3 +187,53 @@ export function Input(call : any){
     };
   }
 }
+
+export function Output(call : any){
+  return (target : any, name : string, fn : any) => {
+    const hasMetadata = Object.prototype.hasOwnProperty.call(
+      fn.prototype, 
+      'metadata'
+    );
+    const id = nanoid();
+    if(hasMetadata){
+      const hasOutput = Object.prototype.hasOwnProperty.call(
+        fn.prototype.metadata, 
+        'output'
+      );
+      if(hasOutput){
+        if(!(fn.prototype.metadata.output instanceof Array)){
+          throw new TypeError(`The 'output' key must be an 'Array'`);
+        }
+        fn.prototype.metadata = {
+          ...fn.prototype.metadata,
+          ...{
+            output: [
+              ...fn.prototype.metadata.output,
+              {
+                call
+              }
+            ]
+          }
+        }
+        return;
+      }
+      fn.prototype.metadata = {
+        ...fn.prototype.metadata,
+        output: [
+          {
+            call
+          }
+        ]
+      }
+      return;
+    }
+    fn.prototype.metadata = {
+      id,
+      output: [
+        {
+          call
+        }
+      ]
+    };
+  }
+}
