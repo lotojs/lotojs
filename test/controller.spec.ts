@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Put, Post } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output } from "../lib/controller";
 
 describe('@Controller', () => {
 
@@ -98,6 +98,34 @@ describe('@Delete', () => {
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
     expect(obj.prototype).toHaveProperty('metadata.route.method', ['DELETE']);
+  });
+
+})
+
+describe('@Input', () => {
+
+  test('When the @Input is inserted, add metadata', () => {
+    const obj = jest.fn();
+    const execute = Input(obj);
+    execute(undefined, undefined, obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.input', [{
+      call: obj
+    }]);
+  });
+
+})
+
+describe('@Output', () => {
+
+  test('When the @Output is inserted, add metadata', () => {
+    const obj = jest.fn();
+    const execute = Output(obj);
+    execute(undefined, undefined, obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.output', [{
+      call: obj
+    }]);
   });
 
 })
