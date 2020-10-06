@@ -135,3 +135,14 @@ export function Delete(path? : string){
     );
   }
 }
+
+/***************** */
+
+export function Pass(){
+  return (target : any, name : string, fn : any) => {
+    const hasMetadata = Object.prototype.hasOwnProperty.call(
+      fn.prototype, 
+      'metadata'
+    );
+  }
+}
