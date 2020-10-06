@@ -2,13 +2,11 @@ import { Controller } from "../lib/controller";
 
 describe('Controller', () => {
 
-  test('When I declare a controller, insert metadata', () => {
-    const obj = {
-      prototype: {}
-    };
+  test('When the @Controller is inserted, add metadata', () => {
+    const obj = jest.fn();
     const controller = Controller();
     controller(obj);
-    expect(obj.prototype).toHaveProperty('metadata');
+    expect(obj.prototype).toHaveProperty('metadata.id');
   });
 
 })

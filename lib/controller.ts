@@ -7,7 +7,8 @@ export function Controller(){
       'metadata'
     );
     const setMetdata = {
-      id: nanoid()
+      id: nanoid(),
+      type: 'controller'
     };
     if(hasMetadata){
       target.prototype.metadata = {
