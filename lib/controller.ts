@@ -138,11 +138,52 @@ export function Delete(path? : string){
 
 /***************** */
 
-export function Pass(){
+export function Input(call : any){
   return (target : any, name : string, fn : any) => {
     const hasMetadata = Object.prototype.hasOwnProperty.call(
       fn.prototype, 
       'metadata'
     );
+    const id = nanoid();
+    if(hasMetadata){
+      const hasInput = Object.prototype.hasOwnProperty.call(
+        fn.prototype.metadata, 
+        'input'
+      );
+      if(hasInput){
+        if(!(fn.prototype.metadata.input instanceof Array)){
+          throw new TypeError(`The 'input' key must be an 'Array'`);
+        }
+        fn.prototype.metadata = {
+          ...fn.prototype.metadata,
+          ...{
+            input: [
+              ...fn.prototype.metadata.input,
+              {
+                call
+              }
+            ]
+          }
+        }
+        return;
+      }
+      fn.prototype.metadata = {
+        ...fn.prototype.metadata,
+        input: [
+          {
+            call
+          }
+        ]
+      }
+      return;
+    }
+    fn.prototype.metadata = {
+      id,
+      input: [
+        {
+          call
+        }
+      ]
+    };
   }
 }
