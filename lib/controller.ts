@@ -6,9 +6,10 @@ export function Controller(path : string = null){
       target.prototype, 
       'metadata'
     );
+    const id = nanoid();
+    const type = 'controller';
     const setMetdata = {
-      id: nanoid(),
-      type: 'controller',
+      type,
       route: {
         path
       }
@@ -20,7 +21,10 @@ export function Controller(path : string = null){
       }
       return;
     }
-    target.prototype.metadata = setMetdata;
+    target.prototype.metadata = {
+      id,
+      ...setMetdata
+    };
   }
 }
 

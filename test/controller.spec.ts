@@ -1,4 +1,4 @@
-import { Controller, Get } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post } from "../lib/controller";
 
 describe('@Controller', () => {
 
@@ -32,12 +32,72 @@ describe('@Get', () => {
   test('When the @Get is inserted, add metadata', () => {
     const obj = jest.fn();
     const path = '/test';
-    const get = Get(path);
-    get(obj);
+    const execute = Get(path);
+    execute(obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
     expect(obj.prototype).toHaveProperty('metadata.route.method', ['GET']);
+  });
+
+})
+
+describe('@Post', () => {
+
+  test('When the @Post is inserted, add metadata', () => {
+    const obj = jest.fn();
+    const path = '/test';
+    const execute = Post(path);
+    execute(obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.type', 'route');
+    expect(obj.prototype).toHaveProperty('metadata.route.path', path);
+    expect(obj.prototype).toHaveProperty('metadata.route.method', ['POST']);
+  });
+
+})
+
+describe('@Put', () => {
+
+  test('When the @Put is inserted, add metadata', () => {
+    const obj = jest.fn();
+    const path = '/test';
+    const execute = Put(path);
+    execute(obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.type', 'route');
+    expect(obj.prototype).toHaveProperty('metadata.route.path', path);
+    expect(obj.prototype).toHaveProperty('metadata.route.method', ['PUT']);
+  });
+
+})
+
+describe('@Patch', () => {
+
+  test('When the @Patch is inserted, add metadata', () => {
+    const obj = jest.fn();
+    const path = '/test';
+    const execute = Patch(path);
+    execute(obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.type', 'route');
+    expect(obj.prototype).toHaveProperty('metadata.route.path', path);
+    expect(obj.prototype).toHaveProperty('metadata.route.method', ['PATCH']);
+  });
+
+})
+
+describe('@Delete', () => {
+
+  test('When the @Delete is inserted, add metadata', () => {
+    const obj = jest.fn();
+    const path = '/test';
+    const execute = Delete(path);
+    execute(obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.type', 'route');
+    expect(obj.prototype).toHaveProperty('metadata.route.path', path);
+    expect(obj.prototype).toHaveProperty('metadata.route.method', ['DELETE']);
   });
 
 })
