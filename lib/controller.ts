@@ -77,9 +77,9 @@ function addMetadataRoute(target : any, options : any = {}){
 }
 
 export function Get(path? : string){
-  return (target : any) => {
+  return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      target,
+      fn,
       {
         path,
         method: 'GET'
@@ -89,9 +89,9 @@ export function Get(path? : string){
 }
 
 export function Post(path? : string){
-  return (target : any) => {
+  return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      target,
+      fn,
       {
         path,
         method: 'POST'
@@ -101,9 +101,9 @@ export function Post(path? : string){
 }
 
 export function Put(path? : string){
-  return (target : any) => {
+  return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      target,
+      fn,
       {
         path,
         method: 'PUT'
@@ -113,9 +113,9 @@ export function Put(path? : string){
 }
 
 export function Patch(path? : string){
-  return (target : any) => {
+  return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      target,
+      fn,
       {
         path,
         method: 'PATCH'
@@ -125,9 +125,9 @@ export function Patch(path? : string){
 }
 
 export function Delete(path? : string){
-  return (target : any) => {
+  return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      target,
+      fn,
       {
         path,
         method: 'DELETE'
