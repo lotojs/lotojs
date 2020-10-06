@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-export function Controller(path : string){
+export function Controller(path : string = null){
   return (target : any) => {
     const hasMetadata = Object.prototype.hasOwnProperty.call(
       target.prototype, 
