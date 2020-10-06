@@ -37,7 +37,7 @@ describe('@Get', () => {
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
-    expect(obj.prototype).toHaveProperty('metadata.route.method', 'GET');
+    expect(obj.prototype).toHaveProperty('metadata.route.method', ['GET']);
   });
 
 })
