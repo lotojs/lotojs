@@ -106,12 +106,32 @@ describe('@Input', () => {
 
   test('When the @Input is inserted, add metadata', () => {
     const obj = jest.fn();
-    const execute = Input(obj);
+    const firstMiddleware = jest.fn();
+    const execute = Input(firstMiddleware);
     execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.input', [{
-      call: obj
+      call: firstMiddleware
     }]);
+  });
+
+  test('When the @Input is inserted two times, concat input', () => {
+    const obj = jest.fn();
+    const firstMiddleware = jest.fn();
+    const twoMiddleware = jest.fn();
+    const firstExecute = Input(firstMiddleware);
+    firstExecute(undefined, undefined, obj);
+    const twoExecute = Input(twoMiddleware);
+    twoExecute(undefined, undefined, obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.input', [
+      {
+        call: firstMiddleware
+      },
+      {
+        call: twoMiddleware
+      }
+    ]);
   });
 
 })
@@ -126,6 +146,25 @@ describe('@Output', () => {
     expect(obj.prototype).toHaveProperty('metadata.output', [{
       call: obj
     }]);
+  });
+
+  test('When the @Output is inserted two times, concat output', () => {
+    const obj = jest.fn();
+    const firstMiddleware = jest.fn();
+    const twoMiddleware = jest.fn();
+    const firstExecute = Output(firstMiddleware);
+    firstExecute(undefined, undefined, obj);
+    const twoExecute = Output(twoMiddleware);
+    twoExecute(undefined, undefined, obj);
+    expect(obj.prototype).toHaveProperty('metadata.id');
+    expect(obj.prototype).toHaveProperty('metadata.output', [
+      {
+        call: firstMiddleware
+      },
+      {
+        call: twoMiddleware
+      }
+    ]);
   });
 
 })
