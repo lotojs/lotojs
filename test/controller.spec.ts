@@ -33,7 +33,7 @@ describe('@Get', () => {
     const obj = jest.fn();
     const path = '/test';
     const execute = Get(path);
-    execute(obj);
+    execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
@@ -48,7 +48,7 @@ describe('@Post', () => {
     const obj = jest.fn();
     const path = '/test';
     const execute = Post(path);
-    execute(obj);
+    execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
@@ -63,7 +63,7 @@ describe('@Put', () => {
     const obj = jest.fn();
     const path = '/test';
     const execute = Put(path);
-    execute(obj);
+    execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
@@ -78,7 +78,7 @@ describe('@Patch', () => {
     const obj = jest.fn();
     const path = '/test';
     const execute = Patch(path);
-    execute(obj);
+    execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
@@ -93,7 +93,7 @@ describe('@Delete', () => {
     const obj = jest.fn();
     const path = '/test';
     const execute = Delete(path);
-    execute(obj);
+    execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'route');
     expect(obj.prototype).toHaveProperty('metadata.route.path', path);
