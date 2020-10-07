@@ -1,4 +1,5 @@
 import * as Express from 'express';
+import * as EscapeStringReg from 'escape-string-regexp';
 
 export class Router{
 
@@ -102,22 +103,50 @@ export class UtilRouter{
     ) && fn.prototype.metadata.type === 'route';
   }
 
-  public static normalizePath(prefix : string, path : string){
-    const normalizePrefix = (prefix || '')
+  public static normalizePath(prefix : string | RegExp, path : string | RegExp){
+    let normalizePrefix;
+    let normalizePath;
+    if(typeof prefix === 'string'){
+      normalizePrefix = (prefix || '')
                               .replace(/\/{2,}/g, '/')
                               .replace(/\/+$/g, '')
                               .replace(/\s/g, '')
                               .toLowerCase()
-                              .trim()
-    const normalizePath = (path || '')
-                            .replace(/\/{2,}/g, '/')
-                            .replace(/\/+$/g, '')
-                            .replace(/^\/+/g, '')
-                            .replace(/\s/g, '')
-                            .toLowerCase()
-                            .trim();
-    return (normalizePrefix + `/${normalizePath}`)
-              .replace(/\/+$/g, '');
+                              .trim();
+    }
+    if(typeof path === 'string'){
+      normalizePath = (path || '')
+                              .replace(/\/{2,}/g, '/')
+                              .replace(/^\/+/g, '')
+                              .replace(/\/+$/g, '')
+                              .replace(/\s/g, '')
+                              .toLowerCase()
+                              .trim();
+    }
+    if(
+      typeof prefix === 'string' &&
+      typeof path === 'string'
+    ){
+      return (normalizePrefix + `/${normalizePath}`)
+                .replace(/\/+$/g, '');
+    }
+    return new RegExp(
+      (
+        (prefix instanceof RegExp) ? 
+          prefix.source : 
+          EscapeStringReg(
+            normalizePrefix.replace(/\/+$/g, '')
+          )
+      ) 
+      +
+      (
+        (path instanceof RegExp) ? 
+          path.source : 
+          EscapeStringReg(
+            '/' + (normalizePath.replace(/\/+$/g, ''))
+          )
+      )
+    );
   }
 
   public static normalizeMethods(methods : string[]){

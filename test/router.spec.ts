@@ -23,7 +23,7 @@ describe('Util Router', () => {
 
   describe('normalizePath', () => {
 
-    test(`When entering a 'path', return the same normalized`, () => {
+    test(`When entering a 'prefix' and 'path' in string format, return the same normalized`, () => {
       const prefix = "/INDEX////"
       const path = "///:id///"
       const normalize = '/index/:id'
@@ -31,7 +31,22 @@ describe('Util Router', () => {
         prefix,
         path
       );
+      expect(typeof result).toBe('string');
       expect(result).toBe(normalize);
+    });
+
+    test(`When entering a 'prefix' or 'path' in regex format, return concat regex`, () => {
+      const prefix = /index/;
+      const path = "///:id///"
+      const normalize = new RegExp(
+        prefix.source + '\/:id'
+      );
+      const result = UtilRouter.normalizePath(
+        prefix,
+        path
+      );
+      expect(result instanceof RegExp).toBe(true);
+      expect((result as RegExp).source).toBe(normalize.source);
     });
 
   });
