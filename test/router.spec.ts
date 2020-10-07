@@ -1,3 +1,4 @@
+import * as EscapeStringReg from 'escape-string-regexp';
 import { UtilRouter } from "../lib/router";
 
 describe('Util Router', () => {
@@ -35,11 +36,25 @@ describe('Util Router', () => {
       expect(result).toBe(normalize);
     });
 
-    test(`When entering a 'prefix' or 'path' in regex format, return concat regex`, () => {
+    test(`When entering a 'prefix' in regex format, return concat regex`, () => {
       const prefix = /index/;
       const path = "///:id///"
       const normalize = new RegExp(
-        prefix.source + '\/:id'
+        prefix.source + EscapeStringReg('/:id')
+      );
+      const result = UtilRouter.normalizePath(
+        prefix,
+        path
+      );
+      expect(result instanceof RegExp).toBe(true);
+      expect((result as RegExp).source).toBe(normalize.source);
+    });
+
+    test(`When entering a 'path' in regex format, return concat regex`, () => {
+      const prefix = '/index';
+      const path = /\/:id/;
+      const normalize = new RegExp(
+        EscapeStringReg(prefix) + path.source
       );
       const result = UtilRouter.normalizePath(
         prefix,
