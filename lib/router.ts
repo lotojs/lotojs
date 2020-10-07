@@ -2,7 +2,6 @@ import * as Express from 'express';
 
 export class Router{
 
-  private _mapRouter : any = {};
   private _expressRef : any;
 
   public loadRoutes(packages : any[]){
@@ -35,18 +34,18 @@ export class Route{
       const controllerRef = controllers[key];
       for(const key in controllerRef.prototype){
         const routeRef = controllerRef.prototype[key];
-        const isRoute = this.isRoute(routeRef);
+        const isRoute = UtilRouter.isRoute(routeRef);
         if(!isRoute){
           continue;
         }
-        const methods = this.normalizeMethods(
+        const methods = UtilRouter.normalizeMethods(
           routeRef.prototype.metadata.route.method || []
         );
         methods.forEach((value) => {
           if(!(typeof this._expressRef[value] === 'function')){
             throw new Error(`Method '${value}' not valid`);
           }
-          const path = this.normalizePath(
+          const path = UtilRouter.normalizePath(
             controllerRef.prototype.route.path,
             routeRef.prototype.metadata.route.path
           );
@@ -71,9 +70,39 @@ export class Route{
     const next = () => {
       nextFlag = true;
     }
+    
   }
 
-  private normalizePath(prefix : string, path : string){
+  public setPackage(packages : any){
+    this._package = packages;
+  }
+
+  public get id(){
+    return this._id;
+  }
+
+  public get path(){
+    return this._path;
+  }
+
+}
+
+export class UtilRouter{
+
+  public static isRoute(fn : any){
+    return Object.prototype.hasOwnProperty.call(
+      fn,
+      'prototype'
+    ) && Object.prototype.hasOwnProperty.call(
+      fn.prototype,
+      'metadata'
+    ) && Object.prototype.hasOwnProperty.call(
+      fn.prototype.metadata,
+      'type'
+    ) && fn.prototype.metadata.type === 'route';
+  }
+
+  public static normalizePath(prefix : string, path : string){
     const normalizePrefix = (prefix || '')
                               .replace(/\/{2,}/g, '/')
                               .replace(/\/+$/g, '')
@@ -91,38 +120,13 @@ export class Route{
               .replace(/\/+$/g, '');
   }
 
-  private normalizeMethods(methods : string[]){
+  public static normalizeMethods(methods : string[]){
     return methods.map((value) => {
       return value.toLowerCase();
     }).filter((value, index) => {
       const firstIndex = methods.indexOf(value);
       return index === firstIndex;
     });
-  }
-
-  private isRoute(fn : any){
-    return Object.prototype.hasOwnProperty.call(
-      fn,
-      'prototype'
-    ) && Object.prototype.hasOwnProperty.call(
-      fn.prototype,
-      'metadata'
-    ) && Object.prototype.hasOwnProperty.call(
-      fn.prototype.metadata,
-      'type'
-    ) && fn.prototype.metadata.type === 'route';
-  }
-
-  public setPackage(packages : any){
-    this._package = packages;
-  }
-
-  public get id(){
-    return this._id;
-  }
-
-  public get path(){
-    return this._path;
   }
 
 }
