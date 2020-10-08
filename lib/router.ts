@@ -78,7 +78,8 @@ export class Route{
     const getInputs = routeRef.prototype.metadata.inputs || [];
     for(const key in getInputs){
       const inputRef = getInputs[key];
-      if(typeof inputRef.call === 'function'){
+      const is
+      if(typeof inputRef === 'function'){
         await inputRef(req, res, next, context);
       }
       if(!context.next){
@@ -116,6 +117,20 @@ export class UtilRouter{
       fn.prototype.metadata,
       'type'
     ) && fn.prototype.metadata.type === 'route';
+  }
+
+  public static isHook(fn : any){
+    return typeof fn === 'function' &&
+    Object.prototype.hasOwnProperty.call(
+      fn,
+      'prototype'
+    ) && Object.prototype.hasOwnProperty.call(
+      fn.prototype,
+      'metadata'
+    ) && Object.prototype.hasOwnProperty.call(
+      fn.prototype.metadata,
+      'type'
+    ) && fn.prototype.metadata.type === 'hook';
   }
 
   public static normalizePath(prefix : string | RegExp, path : string | RegExp){
