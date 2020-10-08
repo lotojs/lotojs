@@ -115,7 +115,8 @@ export class RouteRequest{
       id: this.route.prototype.metadata.id,
       input: null,
       next: false,
-      save: {}
+      save: {},
+      params: null
     };
   }
 

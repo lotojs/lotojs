@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { Context, ContextRoute } from './router';
+import { ContextRoute } from './router';
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -262,7 +262,7 @@ export function Hook(action? : 'none' | 'save'){
 export function Pipe(
   fns : any[]
 ){
-  const execute = async (req, res, next, context : Context) => {
+  const execute = async (req, res, next, context : ContextRoute) => {
     let result;
     for(const key in fns){
       const fnRef = fns[key];
@@ -283,7 +283,7 @@ export function Save(
   fn : any,
   key : string
 ){
-  const execute = async (req, res, next, context : Context) => {
+  const execute = async (req, res, next, context : ContextRoute) => {
     const result = await fn(req, res, next, context);
     if(!context.next){
       return;
