@@ -68,6 +68,7 @@ export class Route{
 
   private async request(req, res, controllerRef, routeRef){
     const context : Context = {
+      id: routeRef.prototype.metadata.id,
       input: null,
       next: false
     };
@@ -175,6 +176,7 @@ export class UtilRouter{
 }
 
 export interface Context{
+  id: string,
   next: boolean,
   input: any
 }
