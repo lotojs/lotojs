@@ -103,6 +103,11 @@ export class Route{
       context.next = false;
       context.input = null;
     }
+    await routeRef.apply(
+      [
+        undefined
+      ]
+    );
   }
 
   public setPackage(packages : any){
