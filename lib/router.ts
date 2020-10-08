@@ -79,7 +79,7 @@ export class Route{
     for(const key in getInputs){
       const inputRef = getInputs[key];
       if(typeof inputRef.call === 'function'){
-        await inputRef.call(req, res, next, context);
+        await inputRef(req, res, next, context);
       }
       if(!context.next){
         return;

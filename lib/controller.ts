@@ -160,9 +160,7 @@ export function Input(call : any){
           ...{
             input: [
               ...fn.prototype.metadata.input,
-              {
-                call
-              }
+              call
             ]
           }
         }
@@ -171,9 +169,7 @@ export function Input(call : any){
       fn.prototype.metadata = {
         ...fn.prototype.metadata,
         input: [
-          {
-            call
-          }
+          call
         ]
       }
       return;
@@ -181,9 +177,7 @@ export function Input(call : any){
     fn.prototype.metadata = {
       id,
       input: [
-        {
-          call
-        }
+        call
       ]
     };
   }
