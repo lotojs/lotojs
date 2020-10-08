@@ -298,7 +298,7 @@ export function Save(
 }
 
 export function Params(
-  fn,
+  fn : any,
   params : any
 ){
   const execute = async (req, res, next, context : ContextRoute) => {
