@@ -67,47 +67,13 @@ export class Route{
   }
 
   private async request(req, res, controllerRef, routeRef){
-    const context : Context = {
-      id: routeRef.prototype.metadata.id,
-      input: null,
-      next: false,
-      save: {}
-    };
-    const next = () => {
-      context.next = true;
-    }
-    const getInputs = routeRef.prototype.metadata.inputs || [];
-    for(const key in getInputs){
-      const inputRef = getInputs[key];
-      const isHook = UtilRouter.isHook(
-        inputRef
-      );
-      if(!isHook){
-        continue;
-      }
-      switch(inputRef.prototype.metadata.action){
-        case 'none':
-          await inputRef(req, res, next, context);
-        break;
-        case 'save':
-          const result = await inputRef(req, res, next, context);
-          context.save = {
-            ...context.save,
-            ...result
-          }
-        break;
-      }
-      if(!context.next){
-        return;
-      }
-      context.next = false;
-      context.input = null;
-    }
-    await routeRef.apply(
-      [
-        undefined
-      ]
+    const instance = new RouteRequest(
+      req,
+      res,
+      controllerRef,
+      routeRef
     );
+    await instance.execute();
   }
 
   public setPackage(packages : any){
@@ -120,6 +86,104 @@ export class Route{
 
   public get path(){
     return this._path;
+  }
+
+}
+
+export class RouteRequest{
+
+  private _context : Context;
+  private _next : () => void;
+
+  constructor(
+    private _req : any,
+    private _res : any,
+    private _controller : any,
+    private _route : any
+  ){}
+
+  public async execute(){
+    this.initContext();
+    this.initNext();
+    this.executeInputs();
+    this.executeRoute();
+  }
+
+  private initContext(){
+    this._context = {
+      id: this.route.prototype.metadata.id,
+      input: null,
+      next: false,
+      save: {}
+    };
+  }
+
+  private initNext(){
+    this._next = () => {
+      this.context.next = true;
+    }
+  }
+
+  private async executeInputs(){
+    const getInputs = this.route.prototype.metadata.inputs || [];
+    for(const key in getInputs){
+      const inputRef = getInputs[key];
+      const isHook = UtilRouter.isHook(
+        inputRef
+      );
+      if(!isHook){
+        continue;
+      }
+      switch(inputRef.prototype.metadata.action){
+        case 'none':
+          await inputRef(this.req, this.res, this.next, this.context);
+        break;
+        case 'save':
+          const result = await inputRef(this.req, this.res, this.next, this.context);
+          this.context.save = {
+            ...this.context.save,
+            ...result
+          }
+        break;
+      }
+      if(!this.context.next){
+        return;
+      }
+      this.context.next = false;
+      this.context.input = null;
+    }
+  }
+
+  private async executeRoute(){
+    await this.route.apply(
+      [
+        undefined
+      ]
+    );
+  }
+
+  public get req(){
+    return this._req;
+  }
+
+  public get res(){
+    return this._res;
+  }
+
+  public get controller(){
+    return this._controller;
+  }
+
+  public get route(){
+    return this._route;
+  }
+
+  public get next(){
+    return this._next;
+  }
+
+  public get context(){
+    return this._context;
   }
 
 }
