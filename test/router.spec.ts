@@ -66,4 +66,45 @@ describe('Util Router', () => {
 
   });
 
+  describe('normalizeMethods', () => {
+
+    test(`When entering a array of methods, return all in lowercase`, () => {
+      const methods = [
+        'GET',
+        'POST',
+        'DELETE',
+        'PATCH',
+        'PUT'
+      ];
+      const result = UtilRouter.normalizeMethods(
+        methods
+      );
+      result.forEach((value) => {
+        const toLower = value.toLowerCase();
+        expect(value).toBe(toLower);
+      });
+    });
+
+    test(`When entering a array of methods, return all without duplication`, () => {
+      const methods = [
+        'GET',
+        'POST',
+        'DELETE',
+        'PATCH',
+        'PUT',
+        'POST',
+        'PUT',
+        'GET'
+      ];
+      const result = UtilRouter.normalizeMethods(
+        methods
+      );
+      result.forEach((value, index) => {
+        const indexFrom = result.indexOf(value);
+        expect(index).toBe(indexFrom);
+      });
+    });
+
+  });
+
 })
