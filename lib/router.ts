@@ -107,7 +107,8 @@ export class Route{
 export class UtilRouter{
 
   public static isRoute(fn : any){
-    return Object.prototype.hasOwnProperty.call(
+    return typeof fn === 'function' &&
+    Object.prototype.hasOwnProperty.call(
       fn,
       'prototype'
     ) && Object.prototype.hasOwnProperty.call(
