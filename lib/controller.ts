@@ -235,26 +235,62 @@ export function Output(call : any){
 
 /******************** */
 
+export function Hook(action? : 'none' | 'save'){
+  return (target : any, name : string, fn : any) => {
+    const hasMetadata = Object.prototype.hasOwnProperty.call(
+      fn.prototype, 
+      'metadata'
+    );
+    const id = nanoid();
+    const type = 'hook';
+    if(hasMetadata){
+      fn.prototype.metadata = {
+        ...fn.prototype.metadata,
+        type,
+        action: action || 'none'
+      }
+      return;
+    }
+    fn.prototype.metadata = {
+      id,
+      type,
+      action: action || 'none'
+    };
+  }
+}
+
 export function Pipe(
   fns : any[]
 ){
-  return async (req, res, next, context : Context) => {
+  const execute = async (req, res, next, context : Context) => {
+    let result;
     for(const key in fns){
       const fnRef = fns[key];
-      const result = await fnRef(req, res, next, context);
+      result = await fnRef(req, res, next, context);
       if(!context.next){
         return;
       }
       context.input = result;
     }
+    return result;
   }
+  const setHook = Hook();
+  setHook(undefined, undefined, execute);
+  return execute;
 }
 
 export function Save(
   fn : any,
   key : string
 ){
-  return async (req, res, next, context : Context) => {
+  const execute = async (req, res, next, context : Context) => {
     const result = await fn(req, res, next, context);
+    if(!context.next){
+      return;
+    }
+    return result;
   };
+  const setHook = Hook('save');
+  setHook(undefined, undefined, execute);
+  return execute;
 }
