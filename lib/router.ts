@@ -71,7 +71,20 @@ export class Route{
     const next = () => {
       nextFlag = true;
     }
-    
+    const context = {
+      input: null
+    };
+    const getInputs = routeRef.prototype.metadata.inputs || [];
+    for(const key in getInputs){
+      const inputRef = getInputs[key];
+      if(typeof inputRef.call === 'function'){
+        await inputRef.call(req, res, next, context);
+      }
+      if(!nextFlag){
+        return;
+      }
+      nextFlag = false;
+    }
   }
 
   public setPackage(packages : any){
