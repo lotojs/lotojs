@@ -107,6 +107,7 @@ export class RouteRequest{
     this.initNext();
     this.executeInputs();
     this.executeRoute();
+    this.executeOutputs();
   }
 
   private initContext(){
@@ -160,6 +161,36 @@ export class RouteRequest{
         undefined
       ]
     );
+  }
+
+  private async executeOutputs(){
+    const getOutputs = this.route.prototype.metadata.outputs || [];
+    for(const key in getOutputs){
+      const inputRef = getOutputs[key];
+      const isHook = UtilRouter.isHook(
+        inputRef
+      );
+      if(!isHook){
+        continue;
+      }
+      switch(inputRef.prototype.metadata.action){
+        case 'none':
+          await inputRef(this.req, this.res, this.next, this.context);
+        break;
+        case 'save':
+          const result = await inputRef(this.req, this.res, this.next, this.context);
+          this.context.save = {
+            ...this.context.save,
+            ...result
+          }
+        break;
+      }
+      if(!this.context.next){
+        return;
+      }
+      this.context.next = false;
+      this.context.input = null;
+    }
   }
 
   public get req(){
