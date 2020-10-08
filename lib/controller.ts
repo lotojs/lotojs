@@ -288,7 +288,9 @@ export function Save(
     if(!context.next){
       return;
     }
-    return result;
+    return {
+      [key]: result
+    };
   };
   const setHook = Hook('save');
   setHook(undefined, undefined, execute);

@@ -70,7 +70,8 @@ export class Route{
     const context : Context = {
       id: routeRef.prototype.metadata.id,
       input: null,
-      next: false
+      next: false,
+      save: {}
     };
     const next = () => {
       context.next = true;
@@ -78,9 +79,23 @@ export class Route{
     const getInputs = routeRef.prototype.metadata.inputs || [];
     for(const key in getInputs){
       const inputRef = getInputs[key];
-      const is
-      if(typeof inputRef === 'function'){
-        await inputRef(req, res, next, context);
+      const isHook = UtilRouter.isHook(
+        inputRef
+      );
+      if(!isHook){
+        continue;
+      }
+      switch(inputRef.prototype.metadata.action){
+        case 'none':
+          await inputRef(req, res, next, context);
+        break;
+        case 'save':
+          const result = await inputRef(req, res, next, context);
+          context.save = {
+            ...context.save,
+            ...result
+          }
+        break;
       }
       if(!context.next){
         return;
@@ -191,8 +206,9 @@ export class UtilRouter{
 
 }
 
-export interface Context{
+export interface Context<Save = any>{
   id: string,
   next: boolean,
-  input: any
+  input: any,
+  save: Save
 }
