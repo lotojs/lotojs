@@ -92,7 +92,7 @@ export class Route{
 
 export class RouteRequest{
 
-  private _context : Context;
+  private _context : ContextRoute;
   private _next : () => void;
 
   constructor(
@@ -275,9 +275,9 @@ export class UtilRouter{
 
 }
 
-export interface Context<Save = any>{
+export interface ContextRoute{
   id: string,
   next: boolean,
   input: any,
-  save: Save
+  save: any
 }
