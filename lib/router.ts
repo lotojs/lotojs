@@ -129,23 +129,30 @@ export class RouteRequest{
     const getInputs = this.route.prototype.metadata.inputs || [];
     for(const key in getInputs){
       const inputRef = getInputs[key];
-      const isHook = UtilRouter.isHook(
-        inputRef
-      );
-      if(!isHook){
+      if(!(typeof inputRef === 'function')){
         continue;
       }
-      switch(inputRef.prototype.metadata.action){
-        case 'none':
-          await inputRef(this.req, this.res, this.next, this.context);
-        break;
-        case 'save':
-          const result = await inputRef(this.req, this.res, this.next, this.context);
-          this.context.save = {
-            ...this.context.save,
-            ...result
-          }
-        break;
+      if(inputRef.prototype.metadata){
+        const isHook = UtilRouter.isHook(
+          inputRef
+        );
+        if(!isHook){
+          continue;
+        }
+        switch(inputRef.prototype.metadata.action){
+          case 'none':
+            await inputRef(this.req, this.res, this.next, this.context);
+          break;
+          case 'save':
+            const result = await inputRef(this.req, this.res, this.next, this.context);
+            this.context.save = {
+              ...this.context.save,
+              ...result
+            }
+          break;
+        }
+      }else{
+        await inputRef(this.req, this.res, this.next, this.context);
       }
       if(!this.context.next){
         return;
