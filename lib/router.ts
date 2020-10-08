@@ -173,17 +173,21 @@ export class RouteRequest{
       if(!isHook){
         continue;
       }
-      switch(inputRef.prototype.metadata.action){
-        case 'none':
-          await inputRef(this.req, this.res, this.next, this.context);
-        break;
-        case 'save':
-          const result = await inputRef(this.req, this.res, this.next, this.context);
-          this.context.save = {
-            ...this.context.save,
-            ...result
-          }
-        break;
+      if(inputRef.prototype.metadata){
+        switch(inputRef.prototype.metadata.action){
+          case 'none':
+            await inputRef(this.req, this.res, this.next, this.context);
+          break;
+          case 'save':
+            const result = await inputRef(this.req, this.res, this.next, this.context);
+            this.context.save = {
+              ...this.context.save,
+              ...result
+            }
+          break;
+        }
+      }else{
+        await inputRef(this.req, this.res, this.next, this.context);
       }
       if(!this.context.next){
         return;
