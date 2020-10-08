@@ -240,6 +240,20 @@ export function Output(call : any){
 
 /******************** */
 
-// export function Hook(){
+export function Hook(){
+  return (target : any, name : string, fn : any) => {
+    // const hasMetadata = Object.prototype.hasOwnProperty.call(
+    //   fn.prototype, 
+    //   'metadata'
+    // );
+    const id = nanoid();
+    const type = 'hook';
+    // if(hasMetadata){
 
-// }
+    // }
+    fn.prototype.metadata = {
+      id,
+      type
+    };
+  }
+}
