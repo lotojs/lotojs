@@ -167,6 +167,9 @@ export class RouteRequest{
     const getOutputs = this.route.prototype.metadata.outputs || [];
     for(const key in getOutputs){
       const inputRef = getOutputs[key];
+      if(!(typeof inputRef === 'function')){
+        continue;
+      }
       if(inputRef.prototype.metadata){
         const isHook = UtilRouter.isHook(
           inputRef
