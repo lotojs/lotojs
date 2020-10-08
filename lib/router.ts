@@ -167,13 +167,13 @@ export class RouteRequest{
     const getOutputs = this.route.prototype.metadata.outputs || [];
     for(const key in getOutputs){
       const inputRef = getOutputs[key];
-      const isHook = UtilRouter.isHook(
-        inputRef
-      );
-      if(!isHook){
-        continue;
-      }
       if(inputRef.prototype.metadata){
+        const isHook = UtilRouter.isHook(
+          inputRef
+        );
+        if(!isHook){
+          continue;
+        }
         switch(inputRef.prototype.metadata.action){
           case 'none':
             await inputRef(this.req, this.res, this.next, this.context);
