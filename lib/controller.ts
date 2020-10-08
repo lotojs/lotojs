@@ -313,3 +313,14 @@ export function Params(
   setHook(undefined, undefined, execute);
   return execute;
 }
+
+export function Obtain(
+  key : string,
+){
+  const execute = async (req, res, next, context : ContextRoute) => {
+    return context.save[key];
+  };
+  const setHook = Hook();
+  setHook(undefined, undefined, execute);
+  return execute;
+}
