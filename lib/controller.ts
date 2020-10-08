@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { Context } from './router';
+import { Context, ContextRoute } from './router';
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -298,7 +298,18 @@ export function Save(
 }
 
 export function Params(
+  fn,
   params : any
 ){
-   
+  const execute = async (req, res, next, context : ContextRoute) => {
+    context.params = params;
+    const result = await fn(req, res, next, context);
+    if(!context.next){
+      return;
+    }
+    return result;
+  };
+  const setHook = Hook();
+  setHook(undefined, undefined, execute);
+  return execute;
 }

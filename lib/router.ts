@@ -324,5 +324,6 @@ export interface ContextRoute{
   id: string,
   next: boolean,
   input: any,
-  save: any
+  save: any,
+  params: any
 }
