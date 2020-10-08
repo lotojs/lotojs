@@ -249,3 +249,12 @@ export function Pipe(
     }
   }
 }
+
+export function Save(
+  fn : any,
+  key : string
+){
+  return async (req, res, next, context : Context) => {
+    const result = await fn(req, res, next, context);
+  };
+}
