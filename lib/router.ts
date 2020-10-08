@@ -165,8 +165,13 @@ export class RouteRequest{
 
   private async executeRoute(){
     await this.route.apply(
+      undefined,
       [
-        undefined
+        this.req,
+        this.res,
+        {
+          save: this.context.save
+        }
       ]
     );
   }
