@@ -67,23 +67,24 @@ export class Route{
   }
 
   private async request(req, res, controllerRef, routeRef){
-    let nextFlag = false;
-    const next = () => {
-      nextFlag = true;
-    }
-    const context = {
-      input: null
+    const context : Context = {
+      input: null,
+      next: false
     };
+    const next = () => {
+      context.next = true;
+    }
     const getInputs = routeRef.prototype.metadata.inputs || [];
     for(const key in getInputs){
       const inputRef = getInputs[key];
       if(typeof inputRef.call === 'function'){
         await inputRef.call(req, res, next, context);
       }
-      if(!nextFlag){
+      if(!context.next){
         return;
       }
-      nextFlag = false;
+      context.next = false;
+      context.input = null;
     }
   }
 
@@ -171,4 +172,9 @@ export class UtilRouter{
     });
   }
 
+}
+
+export interface Context{
+  next: boolean,
+  input: any
 }

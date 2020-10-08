@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { Context } from './router';
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -255,5 +256,20 @@ export function Hook(){
       id,
       type
     };
+  }
+}
+
+export function Pipe(
+  fns : any[]
+){
+  return async (req, res, next, context : Context) => {
+    for(const key in fns){
+      const fnRef = fns[key];
+      const result = await fnRef(req, res, next, context);
+      if(!context.next){
+        return;
+      }
+      context.input = result;
+    }
   }
 }
