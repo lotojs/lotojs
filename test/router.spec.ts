@@ -1,5 +1,5 @@
 import * as EscapeStringReg from 'escape-string-regexp';
-import { Hook } from '../lib/controller';
+import { Get, Hook } from '../lib/controller';
 import { RouteRequest, UtilRouter } from "../lib/router";
 
 describe('Util Router', () => {
@@ -136,11 +136,8 @@ describe('Route Request', () => {
     test(`When the 'initContext' function is called, initialize the context values`, async () => {
       const controller = jest.fn();
       const route = jest.fn();
-      route.prototype.metadata = {
-        id: 'randomid',
-        inputs: [],
-        outputs: []
-      }
+      const setGet = Get();
+      setGet(undefined, undefined, route);
       const instance = new RouteRequest(
         {},
         {},
@@ -148,7 +145,7 @@ describe('Route Request', () => {
         route
       );
       await instance.execute();
-      expect(instance.context).toHaveProperty('id', 'randomid');
+      expect(instance.context).toHaveProperty('id', route.prototype.metadata.id);
       expect(instance.context).toHaveProperty('input', null);
       expect(instance.context).toHaveProperty('next', false);
       expect(instance.context).toHaveProperty('save', {});
