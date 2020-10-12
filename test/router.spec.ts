@@ -1,4 +1,5 @@
 import * as EscapeStringReg from 'escape-string-regexp';
+import { Hook } from '../lib/controller';
 import { UtilRouter } from "../lib/router";
 
 describe('Util Router', () => {
@@ -103,6 +104,24 @@ describe('Util Router', () => {
         const indexFrom = result.indexOf(value);
         expect(index).toBe(indexFrom);
       });
+    });
+
+  });
+
+  describe('isHook', () => {
+
+    test(`When the function is not a 'hook', return false`, () => {
+      const fn = jest.fn();
+      const result = UtilRouter.isHook(fn);
+      expect(result).toBe(false);
+    });
+
+    test(`When the function is a 'hook', return true`, () => {
+      const fn = jest.fn();
+      const setHook = Hook();
+      setHook(undefined, undefined, fn);
+      const result = UtilRouter.isHook(fn);
+      expect(result).toBe(true);
     });
 
   });
