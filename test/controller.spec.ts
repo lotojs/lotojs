@@ -110,9 +110,7 @@ describe('@Input', () => {
     const execute = Input(firstMiddleware);
     execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
-    expect(obj.prototype).toHaveProperty('metadata.input', [{
-      call: firstMiddleware
-    }]);
+    expect(obj.prototype).toHaveProperty('metadata.input', [firstMiddleware]);
   });
 
   test('When the @Input is inserted two times, concat input', () => {
@@ -125,12 +123,8 @@ describe('@Input', () => {
     twoExecute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.input', [
-      {
-        call: firstMiddleware
-      },
-      {
-        call: twoMiddleware
-      }
+      firstMiddleware,
+      twoMiddleware
     ]);
   });
 
@@ -143,9 +137,7 @@ describe('@Output', () => {
     const execute = Output(obj);
     execute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
-    expect(obj.prototype).toHaveProperty('metadata.output', [{
-      call: obj
-    }]);
+    expect(obj.prototype).toHaveProperty('metadata.output', [obj]);
   });
 
   test('When the @Output is inserted two times, concat output', () => {
@@ -158,12 +150,8 @@ describe('@Output', () => {
     twoExecute(undefined, undefined, obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.output', [
-      {
-        call: firstMiddleware
-      },
-      {
-        call: twoMiddleware
-      }
+      firstMiddleware,
+      twoMiddleware
     ]);
   });
 

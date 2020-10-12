@@ -204,9 +204,7 @@ export function Output(call : any){
           ...{
             output: [
               ...fn.prototype.metadata.output,
-              {
-                call
-              }
+              call
             ]
           }
         }
@@ -215,9 +213,7 @@ export function Output(call : any){
       fn.prototype.metadata = {
         ...fn.prototype.metadata,
         output: [
-          {
-            call
-          }
+          call
         ]
       }
       return;
@@ -225,9 +221,7 @@ export function Output(call : any){
     fn.prototype.metadata = {
       id,
       output: [
-        {
-          call
-        }
+        call
       ]
     };
   }
