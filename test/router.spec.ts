@@ -236,4 +236,27 @@ describe('Route Request', () => {
 
   });
 
+  describe('executeRoute', () => {
+
+    test(`When a route is assigned, this is executed`, async () => {
+      const controller = jest.fn();
+      const route = (req, res) => {
+        req.check = true;
+      };
+      const setGet = Get();
+      setGet(undefined, undefined, route);
+      const instance = new RouteRequest(
+        {},
+        {},
+        controller,
+        route
+      );
+      await instance.execute();
+      expect(instance.req).toStrictEqual({
+        check: true
+      });
+    });
+
+  });
+
 });
