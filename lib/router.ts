@@ -225,9 +225,11 @@ export class RouteRequest{
   private async executeInterceptor(exception : any){
     const getInterceptor = this.route.prototype.metadata.interceptor || null;
     if(!(typeof getInterceptor === 'function')){
-      this.res.send(
-        getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
-      );
+      this.res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(
+          getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
+        );
       return;
     }
     const interceptorRef = getInterceptor;
