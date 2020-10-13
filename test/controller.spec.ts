@@ -1,4 +1,5 @@
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe } from "../lib/controller";
+import { ContextRoute } from "../lib/router";
 
 describe('@Controller', () => {
 
@@ -178,3 +179,31 @@ describe('@Hook', () => {
   });
 
 })
+
+describe('@Pipe', () => {
+
+  test('When the @Hook is inserted with multiple functions, pass data between them', async () => {
+    const req : any = {};
+    const middleware1 = (req, res, next, context : ContextRoute) => {
+      return 1;
+    }
+    const middleware2 = (req, res, next, context : ContextRoute) => {
+      req.check = context.input + 1;
+    }
+    const setPipe = Pipe([
+      middleware1,
+      middleware2
+    ]);
+    await setPipe(req, {}, () => {}, {
+      id: 'randomid',
+      input: null,
+      next: true,
+      save: {},
+      params: null
+    });
+    expect(req).toStrictEqual({
+      check: 2
+    });
+  });
+
+});
