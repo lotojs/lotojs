@@ -228,7 +228,7 @@ export function Output(call : any){
 }
 
 export function Interceptor(
-  fn : any
+  call : any
 ){
   return (target : any, name : string, fn : any) => {
 		const hasMetadata = Object.prototype.hasOwnProperty.call(
@@ -239,13 +239,13 @@ export function Interceptor(
     if(hasMetadata){
       fn.prototype.metadata = {
         ...fn.prototype.metadata,
-        interceptor: fn
+        interceptor: call
       }
       return;
     }
     fn.prototype.metadata = {
       id,
-      interceptor: fn
+      interceptor: call
     };
 	}
 }
