@@ -227,6 +227,29 @@ export function Output(call : any){
   }
 }
 
+export function Interceptor(
+  fn : any
+){
+  return (target : any, name : string, fn : any) => {
+		const hasMetadata = Object.prototype.hasOwnProperty.call(
+      fn.prototype, 
+      'metadata'
+    );
+    const id = nanoid();
+    if(hasMetadata){
+      fn.prototype.metadata = {
+        ...fn.prototype.metadata,
+        interceptor: fn
+      }
+      return;
+    }
+    fn.prototype.metadata = {
+      id,
+      interceptor: fn
+    };
+	}
+}
+
 /******************** */
 
 export function Hook(action? : 'none' | 'save'){

@@ -116,7 +116,8 @@ export class RouteRequest{
       input: null,
       next: false,
       save: {},
-      params: null
+      params: null,
+      exception: null
     };
   }
 
@@ -331,5 +332,6 @@ export interface ContextRoute{
   next: boolean,
   input: any,
   save: any,
-  params: any
+  params: any,
+  exception: any
 }
