@@ -20,6 +20,10 @@ export class Router{
     });
   }
 
+  public get express(){
+    return this._expressRef;
+  }
+
 }
 
 export class Route{
