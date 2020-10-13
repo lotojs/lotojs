@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save } from "../lib/controller";
 import { ContextRoute } from "../lib/router";
 
 describe('@Controller', () => {
@@ -203,6 +203,31 @@ describe('@Pipe', () => {
     });
     expect(req).toStrictEqual({
       check: 2
+    });
+  });
+
+});
+
+describe('@Save', () => {
+
+  test('When @Save is inserted, return an object with the parameter key', async () => {
+    const req : any = {};
+    const middleware1 = (req, res, next, context : ContextRoute) => {
+      return 1;
+    }
+    const setSave = Save(
+      middleware1,
+      'my-save'
+    );
+    const result = await setSave(req, {}, () => {}, {
+      id: 'randomid',
+      input: null,
+      next: true,
+      save: {},
+      params: null
+    });
+    expect(result).toStrictEqual({
+      'my-save': 1
     });
   });
 
