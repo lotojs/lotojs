@@ -366,5 +366,5 @@ export interface ContextRoute{
   exception: any
 }
 
-export type Request = Express.Request;
-export type Response = Express.Response;
+export type RequestAction = Express.Request;
+export type ResponseAction = Express.Response;
