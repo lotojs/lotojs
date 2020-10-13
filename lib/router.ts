@@ -105,9 +105,13 @@ export class RouteRequest{
   public async execute(){
     this.initContext();
     this.initNext();
-    this.executeInputs();
-    this.executeRoute();
-    this.executeOutputs();
+    try{
+      await this.executeInputs();
+      await this.executeRoute();
+      await this.executeOutputs();
+    }catch(e){
+      await this.executeInterceptor(e);
+    }
   }
 
   private initContext(){
@@ -212,6 +216,19 @@ export class RouteRequest{
       this.context.next = false;
       this.context.input = null;
     }
+  }
+
+  private async executeInterceptor(exception : any){
+    const getInterceptor = this.route.prototype.metadata.interceptor || null;
+    if(!(typeof getInterceptor === 'function')){
+      return;
+    }
+    const interceptorRef = getInterceptor;
+    await interceptorRef(
+      this.req,
+      this.res,
+      exception,
+    );
   }
 
   public get req(){
