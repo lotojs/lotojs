@@ -100,8 +100,8 @@ export class RouteRequest{
   private _next : () => void;
 
   constructor(
-    private _req : any,
-    private _res : any,
+    private _req : Express.Request,
+    private _res : Express.Response,
     private _controller : any,
     private _route : any
   ){}
