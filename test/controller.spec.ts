@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Obtain } from "../lib/controller";
 import { ContextRoute } from "../lib/router";
 
 describe('@Controller', () => {
@@ -258,6 +258,25 @@ describe('@Params', () => {
         foo: 'bar'
       }
     });
+  });
+
+});
+
+describe('@Obtain', () => {
+
+  test('When @Obtain is inserted, return object with the key selected', async () => {
+    const req : any = {};
+    const setObtain = Obtain('my-save');
+    const result = await setObtain(req, {}, () => {}, {
+      id: 'randomid',
+      input: null,
+      next: true,
+      save: {
+        'my-save': 1
+      },
+      params: null
+    });
+    expect(result).toBe(1);
   });
 
 });
