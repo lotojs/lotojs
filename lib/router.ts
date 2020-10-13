@@ -104,8 +104,8 @@ export class RouteRequest{
   private _next : () => void;
 
   constructor(
-    private _req : Request,
-    private _res : Response,
+    private _req : RequestAction,
+    private _res : ResponseAction,
     private _controller : any,
     private _route : any
   ){}
