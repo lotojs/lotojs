@@ -1,5 +1,9 @@
 import * as Express from 'express';
 import * as EscapeStringReg from 'escape-string-regexp';
+import {
+  StatusCodes,
+  getReasonPhrase,
+} from 'http-status-codes';
 
 export class Router{
 
@@ -221,6 +225,9 @@ export class RouteRequest{
   private async executeInterceptor(exception : any){
     const getInterceptor = this.route.prototype.metadata.interceptor || null;
     if(!(typeof getInterceptor === 'function')){
+      this.res.send(
+        getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
+      );
       return;
     }
     const interceptorRef = getInterceptor;
