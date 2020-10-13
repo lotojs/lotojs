@@ -1,5 +1,5 @@
 import * as EscapeStringReg from 'escape-string-regexp';
-import { Get, Hook } from '../lib/controller';
+import { Get, Hook, Input } from '../lib/controller';
 import { RouteRequest, UtilRouter } from "../lib/router";
 
 describe('Util Router', () => {
@@ -150,6 +150,48 @@ describe('Route Request', () => {
       expect(instance.context).toHaveProperty('next', false);
       expect(instance.context).toHaveProperty('save', {});
       expect(instance.context).toHaveProperty('params', null);
+    });
+
+  });
+
+  describe('executeInputs', () => {
+
+    test(`When a route is executed without 'inputs', it does not execute the loop`, async () => {
+      const controller = jest.fn();
+      const route = jest.fn();
+      const setGet = Get();
+      setGet(undefined, undefined, route);
+      const instance = new RouteRequest(
+        {},
+        {},
+        controller,
+        route
+      );
+      await instance.execute();
+      expect(instance.req).toStrictEqual({});
+    });
+
+    test(`When a route is executed without 'inputs', the loop is executed`, async () => {
+      const controller = jest.fn();
+      const route = jest.fn();
+      const setGet = Get();
+      setGet(undefined, undefined, route);
+      const middleware = (req, res, next, context) => {
+        console.log("ejecuto?")
+        req.check = true;
+      }
+      const setInput = Input(middleware);
+      setInput(undefined, undefined, route);
+      const instance = new RouteRequest(
+        {},
+        {},
+        controller,
+        route
+      );
+      await instance.execute();
+      expect(instance.req).toStrictEqual({
+        check: true
+      });
     });
 
   });

@@ -127,7 +127,7 @@ export class RouteRequest{
   }
 
   private async executeInputs(){
-    const getInputs = this.route.prototype.metadata.inputs || [];
+    const getInputs = this.route.prototype.metadata.input || [];
     for(const key in getInputs){
       const inputRef = getInputs[key];
       if(!(typeof inputRef === 'function')){
