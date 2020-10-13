@@ -199,7 +199,8 @@ describe('@Pipe', () => {
       input: null,
       next: true,
       save: {},
-      params: null
+      params: null,
+      exception: null
     });
     expect(req).toStrictEqual({
       check: 2
@@ -224,7 +225,8 @@ describe('@Save', () => {
       input: null,
       next: true,
       save: {},
-      params: null
+      params: null,
+      exception: null
     });
     expect(result).toStrictEqual({
       'my-save': 1
@@ -251,7 +253,8 @@ describe('@Params', () => {
       input: null,
       next: true,
       save: {},
-      params: null
+      params: null,
+      exception: null
     });
     expect(req).toStrictEqual({
       check: {
@@ -274,7 +277,8 @@ describe('@Obtain', () => {
       save: {
         'my-save': 1
       },
-      params: null
+      params: null,
+      exception: null
     });
     expect(result).toBe(1);
   });
