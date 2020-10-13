@@ -100,8 +100,8 @@ export class RouteRequest{
   private _next : () => void;
 
   constructor(
-    private _req : Express.Request,
-    private _res : Express.Response,
+    private _req : Request,
+    private _res : Response,
     private _controller : any,
     private _route : any
   ){}
@@ -361,3 +361,6 @@ export interface ContextRoute{
   params: any,
   exception: any
 }
+
+export type Request = Express.Request;
+export type Response = Express.Response;
