@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { ContextRoute } from './router';
@@ -30,7 +31,10 @@ export function Controller(path : string = null){
   }
 }
 
-function addMetadataRoute(target : any, options : any = {}){
+function addMetadataRoute(
+  target : any,
+  options : any = {}
+){
   const hasMetadata = Object.prototype.hasOwnProperty.call(
     target.prototype, 
     'metadata'
@@ -43,7 +47,7 @@ function addMetadataRoute(target : any, options : any = {}){
     type,
     route: {
       path,
-      method: [method]
+      method: [method],
     }
   };
   if(hasMetadata){
@@ -77,6 +81,8 @@ function addMetadataRoute(target : any, options : any = {}){
     ...setMetdata
   };
 }
+
+/***************** */
 
 export function Get(path? : string){
   return (target : any, name : string, fn : any) => {
@@ -135,6 +141,49 @@ export function Delete(path? : string){
         method: 'DELETE'
       }
     );
+  }
+}
+
+/****************** */
+
+export function Request(){
+  return (target : any, name : string, index : number) => {
+    const hasMetadata = Object.prototype.hasOwnProperty.call(
+      target.prototype, 
+      'metadata'
+    );
+    const id = nanoid();
+    if(hasMetadata){
+      const hasParams = Object.prototype.hasOwnProperty.call(
+        target.prototype.metadata, 
+        'params'
+      );
+      if(hasParams){
+        target.prototype.metadata = {
+          ...target.prototype.metadata,
+          ...{
+            params: {
+              ...target.prototype.metadata.params,
+              [index]: 'request'
+            }
+          }
+        }
+        return;
+      }
+      target.prototype.metadata = {
+        ...target.prototype.metadata,
+        params: {
+          [index]: 'request'
+        }
+      }
+      return;
+    }
+    target.prototype.metadata = {
+      id,
+      params: {
+        [index]: 'request'
+      }
+    };
   }
 }
 
