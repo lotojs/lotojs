@@ -171,7 +171,7 @@ describe('Route Request', () => {
       expect(instance.req).toStrictEqual({});
     });
 
-    test(`When a route is executed without 'inputs', the loop is executed`, async () => {
+    test(`When a route is executed with simple 'inputs', the loop is executed`, async () => {
       const controller = jest.fn();
       const route = jest.fn();
       const setGet = Get();
@@ -212,7 +212,7 @@ describe('Route Request', () => {
       expect(instance.req).toStrictEqual({});
     });
 
-    test(`When a route is executed without 'outputs', the loop is executed`, async () => {
+    test(`When a route is executed simple 'outputs', the loop is executed`, async () => {
       const controller = jest.fn();
       const route = jest.fn();
       const setGet = Get();
