@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { ContextRoute } from './router';
 
@@ -341,3 +342,17 @@ export function Obtain(
   setHook(undefined, undefined, execute);
   return execute;
 }
+
+/********************* */
+
+interface ActionInterface<T, U> {
+  request : T,
+  response : U
+}
+
+interface ContextInterface<T> {
+  obtain : T
+}
+
+export type Action<T = Request, U = Response> = ActionInterface<T, U>
+export type Context<T = any> = ContextInterface<T>
