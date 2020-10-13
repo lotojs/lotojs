@@ -177,7 +177,6 @@ describe('Route Request', () => {
       const setGet = Get();
       setGet(undefined, undefined, route);
       const middleware = (req, res, next, context) => {
-        console.log("ejecuto?")
         req.check = true;
       }
       const setInput = Input(middleware);
