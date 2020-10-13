@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook } from "../lib/controller";
 
 describe('@Controller', () => {
 
@@ -153,6 +153,28 @@ describe('@Output', () => {
       firstMiddleware,
       twoMiddleware
     ]);
+  });
+
+})
+
+describe('@Hook', () => {
+
+  test('When the @Hook is inserted, add metadata', () => {
+    const fn = jest.fn();
+    const setHook = Hook();
+    setHook(undefined, undefined, fn);
+    expect(fn.prototype).toHaveProperty('metadata.id');
+    expect(fn.prototype).toHaveProperty('metadata.type', 'hook');
+    expect(fn.prototype).toHaveProperty('metadata.action');
+  });
+
+  test('When @Hook is inserted with action, add this in action metadata', () => {
+    const fn = jest.fn();
+    const setHook = Hook('save');
+    setHook(undefined, undefined, fn);
+    expect(fn.prototype).toHaveProperty('metadata.id');
+    expect(fn.prototype).toHaveProperty('metadata.type', 'hook');
+    expect(fn.prototype).toHaveProperty('metadata.action', 'save');
   });
 
 })
