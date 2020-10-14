@@ -287,6 +287,11 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
+"@jest-mock/express@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@jest-mock/express/-/express-1.1.9.tgz#f9d65b35b2d13b86a96e0a6430acef06ca55710f"
+  integrity sha512-/iDtvDXvxmLfoRsigQb/zbfVaW/RUTDPEUXJIWfYTKEf3Eh+KImjF0kPpNRXrkl8uLzFQtcAVmSeAH3gWIWOxg==
+
 "@jest/console@^26.5.2":
   version "26.5.2"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-26.5.2.tgz#94fc4865b1abed7c352b5e21e6c57be4b95604a6"

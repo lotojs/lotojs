@@ -1,6 +1,7 @@
 import * as EscapeStringReg from 'escape-string-regexp';
-import { Get, Hook, Input, Output } from '../lib/controller';
+import { Get, Hook, Input, Output, Request } from '../lib/controller';
 import { RouteRequest, UtilRouter } from "../lib/router";
+import { getMockReq, getMockRes } from '@jest-mock/express'
 
 describe('Util Router', () => {
 
@@ -239,22 +240,44 @@ describe('Route Request', () => {
   describe('executeRoute', () => {
 
     test(`When a route is assigned, this is executed`, async () => {
+      // const controller = jest.fn();
+      // const route = (req, res) => {
+      //   console.log(req)
+      //   req.app.check = true;
+      // };
+      // const setGet = Get();
+      // setGet(undefined, undefined, route);
+      // const req = getMockReq()
+      // const res = getMockRes()
+      // const instance = new RouteRequest(
+      //   req,
+      //   res.res,
+      //   controller,
+      //   route
+      // );
+      // await instance.execute();
+      // expect(instance.req.app).toHaveProperty('check', true);
+    });
+
+    test(`When the @Request parameter is assigned to the route, return the 'request' object`, async () => {
       const controller = jest.fn();
-      const route = (req, res) => {
-        req.check = true;
+      const route = (req) => {
+        req.app.check = true;
       };
       const setGet = Get();
       setGet(undefined, undefined, route);
+      const setRequest = Request();
+      setRequest(route, 'myvar', 0);
+      const req = getMockReq()
+      const res = getMockRes()
       const instance = new RouteRequest(
-        {} as any,
-        {} as any,
+        req,
+        res.res,
         controller,
         route
       );
       await instance.execute();
-      expect(instance.req).toStrictEqual({
-        check: true
-      });
+      expect(instance.req.app).toHaveProperty('check', true);
     });
 
   });
