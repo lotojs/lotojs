@@ -1,3 +1,4 @@
+import { Container, Singleton } from "typescript-ioc";
 import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Response, Obtain, Request, Body, Header, Parameters, In } from "../lib/controller";
 import { ContextRoute } from "../lib/router";
 
@@ -9,6 +10,14 @@ describe('@Controller', () => {
     controller(obj);
     expect(obj.prototype).toHaveProperty('metadata.id');
     expect(obj.prototype).toHaveProperty('metadata.type', 'controller');
+  });
+
+  test('When the @Controller is inserted, add to container', () => {
+    const obj = jest.fn();
+    const controller = Controller('/test');
+    controller(obj);
+    const container = Container.get(obj);
+    expect(container).not.toBeNull();
   });
 
   test('When the @Controller path has value, set path', () => {

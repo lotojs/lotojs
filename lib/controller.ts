@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { nanoid } from 'nanoid';
+import { Singleton } from 'typescript-ioc'
 import { ContextRoute, RequestAction, ResponseAction } from './router';
 
 export function Controller(path : string = null){
@@ -27,6 +28,7 @@ export function Controller(path : string = null){
       id,
       ...setMetdata
     };
+    Singleton(target); // IOC
   }
 }
 
