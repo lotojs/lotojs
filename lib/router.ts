@@ -5,6 +5,7 @@ import {
   getReasonPhrase,
 } from 'http-status-codes';
 import { Get } from './controller';
+import { Container } from 'typescript-ioc';
 
 export class Router{
 
@@ -179,7 +180,9 @@ export class RouteRequest{
 
   private async executeRoute(){
     await this.route.apply(
-      undefined,
+      Container.get(
+        this.controller
+      ),
       [
         this.req,
         this.res,
