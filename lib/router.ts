@@ -179,17 +179,39 @@ export class RouteRequest{
   }
 
   private async executeRoute(){
+    const getParams = this.route.prototype.metadata.params || {};
+    const paramsArray = [];
+    for(const key in getParams){
+      let ref;
+      const type = getParams[key];
+      switch(type){
+        case 'request':
+          ref = this.req
+        break;
+        case 'response':
+          ref = this.res
+        break;
+        case 'body':
+          ref = this.req.body
+        break;
+        case 'header':
+          ref = this.req.headers
+        break;
+        case 'context':
+          ref = {
+            save: this.context.save
+          }
+        break;
+      }
+      paramsArray.push(
+        ref
+      );
+    }
     await this.route.apply(
       Container.get(
         this.controller
       ),
-      [
-        this.req,
-        this.res,
-        {
-          save: this.context.save
-        }
-      ]
+      paramsArray
     );
   }
 
