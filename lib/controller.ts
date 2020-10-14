@@ -240,6 +240,16 @@ export function Parameters(){
   }
 }
 
+export function Query(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'query'
+    );
+  }
+}
+
 export function In(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(

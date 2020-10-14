@@ -197,6 +197,12 @@ export class RouteRequest{
         case 'header':
           ref = this.req.headers
         break;
+        case 'parameters':
+          ref = this.req.params
+        break;
+        case 'query':
+          ref = this.req.query
+        break;
         case 'context':
           ref = {
             save: this.context.save
