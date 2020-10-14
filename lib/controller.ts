@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { nanoid } from 'nanoid';
-import { ContextRoute } from './router';
+import { ContextRoute, RequestAction, ResponseAction } from './router';
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -455,14 +455,12 @@ export function Obtain(
 
 /********************* */
 
-interface ActionInterface<T, U> {
-  request : T,
-  response : U
+interface ActionInterface<T, U, Y> {
+  Request : T,
+  Response : U,
+  Context: {
+    obtain: Y
+  }
 }
 
-interface ContextInterface<T> {
-  obtain : T
-}
-
-export type Action<T = Request, U = Response> = ActionInterface<T, U>
-export type ContextIn<T = any> = ContextInterface<T>
+export type Action<T = RequestAction, U = ResponseAction, Y = any> = ActionInterface<T, U, Y>

@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Obtain, Request } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Response, Obtain, Request, Body, Header, Parameters, In } from "../lib/controller";
 import { ContextRoute } from "../lib/router";
 
 describe('@Controller', () => {
@@ -296,6 +296,81 @@ describe('@Request', () => {
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
       0: 'request'
+    });
+  });
+
+});
+
+describe('@Response', () => {
+
+  test('When @Response is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useResponse = Response();
+    useResponse(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'response'
+    });
+  });
+
+});
+
+describe('@Body', () => {
+
+  test('When @Body is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useBody = Body();
+    useBody(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'body'
+    });
+  });
+
+});
+
+describe('@Header', () => {
+
+  test('When @Header is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useHeader = Header();
+    useHeader(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'header'
+    });
+  });
+
+});
+
+describe('@Parameters', () => {
+
+  test('When @Parameters is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useParameters = Parameters();
+    useParameters(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'parameters'
+    });
+  });
+
+});
+
+describe('@In', () => {
+
+  test('When @In is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useIn = In();
+    useIn(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'context'
     });
   });
 
