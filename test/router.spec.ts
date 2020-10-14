@@ -1,5 +1,5 @@
 import * as EscapeStringReg from 'escape-string-regexp';
-import { Get, Hook, Input, Output, Request } from '../lib/controller';
+import { Get, Hook, Input, Output, Request, Response } from '../lib/controller';
 import { RouteRequest, UtilRouter } from "../lib/router";
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
@@ -239,26 +239,6 @@ describe('Route Request', () => {
 
   describe('executeRoute', () => {
 
-    test(`When a route is assigned, this is executed`, async () => {
-      // const controller = jest.fn();
-      // const route = (req, res) => {
-      //   console.log(req)
-      //   req.app.check = true;
-      // };
-      // const setGet = Get();
-      // setGet(undefined, undefined, route);
-      // const req = getMockReq()
-      // const res = getMockRes()
-      // const instance = new RouteRequest(
-      //   req,
-      //   res.res,
-      //   controller,
-      //   route
-      // );
-      // await instance.execute();
-      // expect(instance.req.app).toHaveProperty('check', true);
-    });
-
     test(`When the @Request parameter is assigned to the route, return the 'request' object`, async () => {
       const controller = jest.fn();
       const route = (req) => {
@@ -278,6 +258,27 @@ describe('Route Request', () => {
       );
       await instance.execute();
       expect(instance.req.app).toHaveProperty('check', true);
+    });
+
+    test(`When the @Response parameter is assigned to the route, return the 'response' object`, async () => {
+      const controller = jest.fn();
+      const route = (res) => {
+        res.app.check = true;
+      };
+      const setGet = Get();
+      setGet(undefined, undefined, route);
+      const setResponse = Response();
+      setResponse(route, 'myvar', 0);
+      const req = getMockReq()
+      const res = getMockRes()
+      const instance = new RouteRequest(
+        req,
+        res.res,
+        controller,
+        route
+      );
+      await instance.execute();
+      expect(instance.res.app).toHaveProperty('check', true);
     });
 
   });
