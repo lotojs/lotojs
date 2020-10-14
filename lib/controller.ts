@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { ContextRoute } from './router';
 
@@ -146,44 +145,106 @@ export function Delete(path? : string){
 
 /****************** */
 
-export function Request(){
-  return (target : any, name : string, index : number) => {
-    const hasMetadata = Object.prototype.hasOwnProperty.call(
-      target.prototype, 
-      'metadata'
+function addMetadataParams(
+  target: any,
+  index: number,
+  type: string
+){
+  const hasMetadata = Object.prototype.hasOwnProperty.call(
+    target.prototype, 
+    'metadata'
+  );
+  const id = nanoid();
+  if(hasMetadata){
+    const hasParams = Object.prototype.hasOwnProperty.call(
+      target.prototype.metadata, 
+      'params'
     );
-    const id = nanoid();
-    if(hasMetadata){
-      const hasParams = Object.prototype.hasOwnProperty.call(
-        target.prototype.metadata, 
-        'params'
-      );
-      if(hasParams){
-        target.prototype.metadata = {
-          ...target.prototype.metadata,
-          ...{
-            params: {
-              ...target.prototype.metadata.params,
-              [index]: 'request'
-            }
-          }
-        }
-        return;
-      }
+    if(hasParams){
       target.prototype.metadata = {
         ...target.prototype.metadata,
-        params: {
-          [index]: 'request'
+        ...{
+          params: {
+            ...target.prototype.metadata.params,
+            [index]: type
+          }
         }
       }
       return;
     }
     target.prototype.metadata = {
-      id,
+      ...target.prototype.metadata,
       params: {
-        [index]: 'request'
+        [index]: type
       }
-    };
+    }
+    return;
+  }
+  target.prototype.metadata = {
+    id,
+    params: {
+      [index]: type
+    }
+  };
+}
+
+export function Request(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'request'
+    );
+  }
+}
+
+export function Response(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'response'
+    );
+  }
+}
+
+export function Body(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'body'
+    );
+  }
+}
+
+export function Header(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'header'
+    );
+  }
+}
+
+export function Parameters(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'parameters'
+    );
+  }
+}
+
+export function In(){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target,
+      index,
+      'context'
+    );
   }
 }
 
@@ -404,4 +465,4 @@ interface ContextInterface<T> {
 }
 
 export type Action<T = Request, U = Response> = ActionInterface<T, U>
-export type Context<T = any> = ContextInterface<T>
+export type ContextIn<T = any> = ContextInterface<T>

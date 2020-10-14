@@ -139,8 +139,8 @@ describe('Route Request', () => {
       const setGet = Get();
       setGet(undefined, undefined, route);
       const instance = new RouteRequest(
-        {},
-        {},
+        {} as any,
+        {} as any,
         controller,
         route
       );
@@ -162,8 +162,8 @@ describe('Route Request', () => {
       const setGet = Get();
       setGet(undefined, undefined, route);
       const instance = new RouteRequest(
-        {},
-        {},
+        {} as any,
+        {} as any,
         controller,
         route
       );
@@ -182,8 +182,8 @@ describe('Route Request', () => {
       const setInput = Input(middleware);
       setInput(undefined, undefined, route);
       const instance = new RouteRequest(
-        {},
-        {},
+        {} as any,
+        {} as any,
         controller,
         route
       );
@@ -203,8 +203,8 @@ describe('Route Request', () => {
       const setGet = Get();
       setGet(undefined, undefined, route);
       const instance = new RouteRequest(
-        {},
-        {},
+        {} as any,
+        {} as any,
         controller,
         route
       );
@@ -223,8 +223,8 @@ describe('Route Request', () => {
       const setInput = Output(middleware);
       setInput(undefined, undefined, route);
       const instance = new RouteRequest(
-        {},
-        {},
+        {} as any,
+        {} as any,
         controller,
         route
       );
@@ -246,8 +246,8 @@ describe('Route Request', () => {
       const setGet = Get();
       setGet(undefined, undefined, route);
       const instance = new RouteRequest(
-        {},
-        {},
+        {} as any,
+        {} as any,
         controller,
         route
       );

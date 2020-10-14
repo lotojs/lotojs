@@ -4,6 +4,7 @@ import {
   StatusCodes,
   getReasonPhrase,
 } from 'http-status-codes';
+import { Get } from './controller';
 
 export class Router{
 

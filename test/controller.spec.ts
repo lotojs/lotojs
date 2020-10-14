@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Obtain } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Obtain, Request } from "../lib/controller";
 import { ContextRoute } from "../lib/router";
 
 describe('@Controller', () => {
@@ -281,6 +281,22 @@ describe('@Obtain', () => {
       exception: null
     });
     expect(result).toBe(1);
+  });
+
+});
+
+
+describe('@Request', () => {
+
+  test('When @Request is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useRequest = Request();
+    useRequest(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'request'
+    });
   });
 
 });
