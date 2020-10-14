@@ -1,5 +1,5 @@
 import * as EscapeStringReg from 'escape-string-regexp';
-import { Body, Get, Header, Hook, Input, Output, Parameters, Query, Request, Response } from '../lib/controller';
+import { Body, Get, Header, Hook, In, Input, Output, Parameters, Query, Request, Response, Save } from '../lib/controller';
 import { RouteRequest, UtilRouter } from "../lib/router";
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
@@ -383,6 +383,42 @@ describe('Route Request', () => {
       await instance.execute();
       expect(instance.req.query).toHaveProperty('name', 'a');
       expect(instance.req.query).toHaveProperty('lastname', 'b');
+    });
+
+    test(`When the @In parameter is assigned to the route, return the 'in' object`, async () => {
+      const controller = jest.fn();
+      const route = (req, context) => {
+        req.app.check = context.save;
+      };
+      const setGet = Get();
+      setGet(undefined, undefined, route);
+      const setInput = Input(
+        Save(
+          (req, res, next) => {
+            next();
+            return 'a';
+          },
+          'name'
+        )
+      );
+      setInput(undefined, undefined, route);
+      const setRequest = Request();
+      setRequest(route, 'myvar', 0);
+      const setIn = In();
+      setIn(route, 'myvar', 1);
+      const req = getMockReq()
+      const res = getMockRes()
+      const instance = new RouteRequest(
+        req,
+        res.res,
+        controller,
+        route
+      );
+      await instance.execute();
+      expect(instance.req.app).toHaveProperty('check');
+      expect((instance.req.app as any).check).toStrictEqual({
+        name: 'a'
+      });
     });
 
   });
