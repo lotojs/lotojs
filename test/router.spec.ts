@@ -1,5 +1,5 @@
 import * as EscapeStringReg from 'escape-string-regexp';
-import { Get, Hook, Input, Output, Request, Response } from '../lib/controller';
+import { Body, Get, Hook, Input, Output, Request, Response } from '../lib/controller';
 import { RouteRequest, UtilRouter } from "../lib/router";
 import { getMockReq, getMockRes } from '@jest-mock/express'
 
@@ -279,6 +279,32 @@ describe('Route Request', () => {
       );
       await instance.execute();
       expect(instance.res.app).toHaveProperty('check', true);
+    });
+
+    test(`When the @Body parameter is assigned to the route, return the 'body' object`, async () => {
+      const controller = jest.fn();
+      const route = (body) => {
+        body.lastname = 'b'
+      };
+      const setGet = Get();
+      setGet(undefined, undefined, route);
+      const setBody = Body();
+      setBody(route, 'myvar', 0);
+      const req = getMockReq({
+        body: {
+          name: 'a'
+        }
+      })
+      const res = getMockRes()
+      const instance = new RouteRequest(
+        req,
+        res.res,
+        controller,
+        route
+      );
+      await instance.execute();
+      expect(instance.req.body).toHaveProperty('name', 'a');
+      expect(instance.req.body).toHaveProperty('lastname', 'b');
     });
 
   });
