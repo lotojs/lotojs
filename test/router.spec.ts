@@ -143,7 +143,10 @@ describe('Route Request', () => {
         {} as any,
         {} as any,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.context).toHaveProperty('id', route.prototype.metadata.id);
@@ -166,7 +169,10 @@ describe('Route Request', () => {
         {} as any,
         {} as any,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req).toStrictEqual({});
@@ -186,7 +192,10 @@ describe('Route Request', () => {
         {} as any,
         {} as any,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req).toStrictEqual({
@@ -207,7 +216,10 @@ describe('Route Request', () => {
         {} as any,
         {} as any,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req).toStrictEqual({});
@@ -227,7 +239,10 @@ describe('Route Request', () => {
         {} as any,
         {} as any,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req).toStrictEqual({
@@ -254,7 +269,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req.app).toHaveProperty('check', true);
@@ -275,7 +293,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.res.app).toHaveProperty('check', true);
@@ -300,7 +321,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req.body).toHaveProperty('name', 'a');
@@ -326,7 +350,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req.headers).toHaveProperty('name', 'a');
@@ -352,7 +379,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req.params).toHaveProperty('name', 'a');
@@ -378,7 +408,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req.query).toHaveProperty('name', 'a');
@@ -412,7 +445,10 @@ describe('Route Request', () => {
         req,
         res.res,
         controller,
-        route
+        route,
+        [],
+        [],
+        undefined
       );
       await instance.execute();
       expect(instance.req.app).toHaveProperty('check');
