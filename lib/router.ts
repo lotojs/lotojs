@@ -131,7 +131,7 @@ export class RouteRequest{
       input: null,
       next: false,
       save: {},
-      params: null,
+      params: {},
       exception: null
     };
   }
