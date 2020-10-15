@@ -15,7 +15,7 @@ export abstract class App{
 }
 
 export interface AppLoaderOptionsInterface{
-	useServer?: boolean,
+	runServer?: boolean,
 	http?: {
 		port?: number,
 		host?: string
@@ -47,7 +47,7 @@ class AppLoader{
 	private setDefaultOptions(){
 		this._options = {
 			...{
-				useServer: true,
+				runServer: true,
 				http: {
 					port: 3000,
 					host: '0.0.0.0'
@@ -69,7 +69,7 @@ class AppLoader{
 	}
 
 	private setHttp(){
-		if(!(this._options.useServer)){
+		if(!(this._options.runServer)){
 			return;
 		}
 		if(!(this._options.http)){
@@ -79,7 +79,7 @@ class AppLoader{
 	}
 
 	private setHttps(){
-		if(!(this._options.useServer)){
+		if(!(this._options.runServer)){
 			return;
 		}
 		if(!(this._options.https)){
@@ -89,7 +89,7 @@ class AppLoader{
 	}
 
 	private runServer(){
-		if(!(this._options.useServer)){
+		if(!(this._options.runServer)){
 			return;
 		}
 		if(this._serverHttp){
