@@ -60,6 +60,14 @@ export class Route{
             controllerRef.prototype.route.path,
             routeRef.prototype.metadata.route.path
           );
+          const inputsRef = [
+            ...inputs || [],
+            ...routeRef.prototype.metadata.input || []
+          ];
+          const outputsRef = [
+            ...outputs || [],
+            ...routeRef.prototype.metadata.output || []
+          ];
           this._expressRef[value](
             path,
             (req, res) => {
@@ -68,8 +76,8 @@ export class Route{
                 res,
                 controllerRef,
                 routeRef,
-                inputs,
-                outputs
+                inputsRef,
+                outputsRef
               );
             }
           );
