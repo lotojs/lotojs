@@ -127,7 +127,7 @@ export class RouteRequest{
   private initContext(){
     this._context = {
       id: this.route.prototype.metadata.id,
-      input: this.req,
+      input: null,
       next: false,
       save: {},
       params: null,
@@ -143,6 +143,7 @@ export class RouteRequest{
 
   private async executeInputs(){
     const getInputs = this.route.prototype.metadata.input || [];
+    this.context.input = this.req;
     for(const key in getInputs){
       const inputRef = getInputs[key];
       if(!(typeof inputRef === 'function')){
@@ -174,7 +175,6 @@ export class RouteRequest{
         return;
       }
       this.context.next = false;
-      this.context.input = this.req;
     }
   }
 
@@ -213,12 +213,13 @@ export class RouteRequest{
         ref
       );
     }
-    await this.route.apply(
+    const result = await this.route.apply(
       Container.get(
         this.controller
       ),
       paramsArray
     );
+    this.context.input = result;
   }
 
   private async executeOutputs(){
@@ -254,7 +255,7 @@ export class RouteRequest{
         return;
       }
       this.context.next = false;
-      this.context.input = null;
+      this.context.input = this.req;
     }
   }
 
