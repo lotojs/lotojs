@@ -41,6 +41,7 @@ export class Route{
     const controllers = this._package.prototype.controllers;
     const inputs = this._package.prototype.inputs;
     const outputs = this._package.prototype.outputs;
+    const interceptor = this._package.prototype.interceptor;
     for(const key in controllers){
       const controllerRef = controllers[key];
       for(const key in controllerRef.prototype){
@@ -68,6 +69,7 @@ export class Route{
             ...(outputs || []),
             ...(routeRef.prototype.metadata.output || [])
           ];
+          const interceptorRef = routeRef.prototype.metadata.interceptor || interceptor;
           this._expressRef[value](
             path,
             (req, res) => {
@@ -77,7 +79,8 @@ export class Route{
                 controllerRef,
                 routeRef,
                 inputsRef,
-                outputsRef
+                outputsRef,
+                interceptorRef
               );
             }
           );
@@ -92,7 +95,8 @@ export class Route{
     controllerRef, 
     routeRef,
     inputsRef,
-    outputsRef
+    outputsRef,
+    interceptorRef
   ){
     const instance = new RouteRequest(
       req,
@@ -100,7 +104,8 @@ export class Route{
       controllerRef,
       routeRef,
       inputsRef,
-      outputsRef
+      outputsRef,
+      interceptorRef
     );
     await instance.execute();
   }
@@ -131,7 +136,8 @@ export class RouteRequest{
     private _controller : any,
     private _route : any,
     private _inputs : any[],
-    private _outputs : any[]
+    private _outputs : any[],
+    private _interceptor : any
   ){}
 
   public async execute(){
@@ -282,7 +288,7 @@ export class RouteRequest{
   }
 
   private async executeInterceptor(exception : any){
-    const getInterceptor = this.route.prototype.metadata.interceptor || null;
+    const getInterceptor = this._interceptor;
     if(!(typeof getInterceptor === 'function')){
       this.res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
