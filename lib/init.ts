@@ -39,6 +39,8 @@ class AppLoader{
 		private _options : AppLoadOptions
 	){
 		this.setDefaultOptions();
+		this.setHttp();
+		this.setHttps();
 		this._router = new Router();
 	}
 
@@ -60,8 +62,6 @@ class AppLoader{
 	}
 
 	public async run(){
-		this.setHttp();
-		this.setHttps();
 		this._router.loadRoutes(
 			this._packages
 		);
