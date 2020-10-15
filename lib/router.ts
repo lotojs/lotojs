@@ -61,12 +61,12 @@ export class Route{
             routeRef.prototype.metadata.route.path
           );
           const inputsRef = [
-            ...inputs || [],
-            ...routeRef.prototype.metadata.input || []
+            ...(inputs || []),
+            ...(routeRef.prototype.metadata.input || [])
           ];
           const outputsRef = [
-            ...outputs || [],
-            ...routeRef.prototype.metadata.output || []
+            ...(outputs || []),
+            ...(routeRef.prototype.metadata.output || [])
           ];
           this._expressRef[value](
             path,
