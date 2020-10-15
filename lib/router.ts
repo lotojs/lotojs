@@ -127,7 +127,7 @@ export class RouteRequest{
   private initContext(){
     this._context = {
       id: this.route.prototype.metadata.id,
-      input: null,
+      input: this.req,
       next: false,
       save: {},
       params: null,
@@ -174,7 +174,7 @@ export class RouteRequest{
         return;
       }
       this.context.next = false;
-      this.context.input = null;
+      this.context.input = this.req;
     }
   }
 
