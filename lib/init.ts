@@ -30,7 +30,6 @@ export type AppLoadOptions = AppLoaderOptionsInterface
 
 class AppLoader{
 
-	private _packages : any[] = [];
 	private _router : Router;
 	private _serverHttp : any;
 	private _serverHttps : any;
@@ -57,13 +56,11 @@ class AppLoader{
 		}
 	}
 
-	public packages(packages : any[]){
-		this._packages = packages;
-	}
-
-	public async run(){
+	public async run(
+		packages : any[]
+	){
 		this._router.loadRoutes(
-			this._packages
+			packages
 		);
 		this.runServer();
 	}
