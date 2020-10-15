@@ -20,6 +20,19 @@ describe('@Controller', () => {
     expect(container).not.toBeNull();
   });
 
+  test(`When the @Controller is inserted, set it with the 'singleton' pattern`, () => {
+    const obj = function Test(){
+      this.value = 1;
+    }
+    const controller = Controller('/test');
+    controller(obj);
+    for(let i = 1; i <= 10; i++){
+      const container = Container.get(obj);
+      expect(container.value).toBe(i);
+      container.value++;
+    }
+  });
+
   test('When the @Controller path has value, set path', () => {
     const obj = jest.fn();
     const path = '/test';
