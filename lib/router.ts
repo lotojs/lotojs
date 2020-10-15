@@ -4,15 +4,13 @@ import {
   StatusCodes,
   getReasonPhrase,
 } from 'http-status-codes';
-import { Get } from './controller';
 import { Container } from 'typescript-ioc';
 
 export class Router{
 
-  private _expressRef : any;
+  private _expressRef : any = Express();
 
   public loadRoutes(packages : any[]){
-    this._expressRef = Express();
     packages.forEach((value, index) => {
       const instance = new Route(
         this._expressRef
