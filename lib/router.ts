@@ -39,6 +39,8 @@ export class Route{
 
   public load(){
     const controllers = this._package.prototype.controllers;
+    const inputs = this._package.prototype.inputs;
+    const outputs = this._package.prototype.outputs;
     for(const key in controllers){
       const controllerRef = controllers[key];
       for(const key in controllerRef.prototype){
@@ -65,7 +67,9 @@ export class Route{
                 req, 
                 res,
                 controllerRef,
-                routeRef
+                routeRef,
+                inputs,
+                outputs
               );
             }
           );
@@ -74,12 +78,21 @@ export class Route{
     }
   }
 
-  private async request(req, res, controllerRef, routeRef){
+  private async request(
+    req, 
+    res, 
+    controllerRef, 
+    routeRef,
+    inputsRef,
+    outputsRef
+  ){
     const instance = new RouteRequest(
       req,
       res,
       controllerRef,
-      routeRef
+      routeRef,
+      inputsRef,
+      outputsRef
     );
     await instance.execute();
   }
@@ -108,7 +121,9 @@ export class RouteRequest{
     private _req : RequestAction,
     private _res : ResponseAction,
     private _controller : any,
-    private _route : any
+    private _route : any,
+    private _inputs : any[],
+    private _outputs : any[]
   ){}
 
   public async execute(){
