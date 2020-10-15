@@ -104,6 +104,7 @@ export class RouteRequest{
 
   private _context : ContextRoute;
   private _next : () => void;
+  private _returnValue : any;
 
   constructor(
     private _req : RequestAction,
@@ -213,17 +214,17 @@ export class RouteRequest{
         ref
       );
     }
-    const result = await this.route.apply(
+    this._returnValue = await this.route.apply(
       Container.get(
         this.controller
       ),
       paramsArray
     );
-    this.context.input = result;
   }
 
   private async executeOutputs(){
     const getOutputs = this.route.prototype.metadata.output || [];
+    this.context.input = this._returnValue;
     for(const key in getOutputs){
       const inputRef = getOutputs[key];
       if(!(typeof inputRef === 'function')){
@@ -255,7 +256,7 @@ export class RouteRequest{
         return;
       }
       this.context.next = false;
-      this.context.input = this.req;
+      this.context.input = this._returnValue;
     }
   }
 
