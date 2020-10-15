@@ -5,7 +5,7 @@ import { Router } from "./router";
 export abstract class App{
 
 	public static init(
-		options = {}
+		options : AppLoadOptions = {}
 	){
 		return new AppLoader(
 			options
