@@ -164,7 +164,7 @@ export class RouteRequest{
   }
 
   private async executeInputs(){
-    const getInputs = this.route.prototype.metadata.input || [];
+    const getInputs = this._inputs;
     this.context.input = this.req;
     for(const key in getInputs){
       const inputRef = getInputs[key];
@@ -244,7 +244,7 @@ export class RouteRequest{
   }
 
   private async executeOutputs(){
-    const getOutputs = this.route.prototype.metadata.output || [];
+    const getOutputs = this._outputs;
     this.context.input = this._returnValue;
     for(const key in getOutputs){
       const inputRef = getOutputs[key];
