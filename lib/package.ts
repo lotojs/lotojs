@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 
 export interface PackageOptions{
-  controllers? : ((...args : any[]) => any)[],
+  controllers? : any[],
   inputs? : ((...args : any[]) => any)[],
   outputs? : ((...args : any[]) => any)[],
   interceptor? : ((...args : any[]) => any)

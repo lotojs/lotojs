@@ -36,6 +36,7 @@ function addMetadataRoute(
   target : any,
   options : any = {}
 ){
+  // console.log(target)
   const hasMetadata = Object.prototype.hasOwnProperty.call(
     target.prototype, 
     'metadata'
@@ -88,7 +89,7 @@ function addMetadataRoute(
 export function Get(path? : string){
   return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      fn,
+      (typeof fn === 'function') ? fn : fn.value,
       {
         path,
         method: 'GET'
@@ -100,7 +101,7 @@ export function Get(path? : string){
 export function Post(path? : string){
   return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      fn,
+      (typeof fn === 'function') ? fn : fn.value,
       {
         path,
         method: 'POST'
@@ -112,7 +113,7 @@ export function Post(path? : string){
 export function Put(path? : string){
   return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      fn,
+      (typeof fn === 'function') ? fn : fn.value,
       {
         path,
         method: 'PUT'
@@ -124,7 +125,7 @@ export function Put(path? : string){
 export function Patch(path? : string){
   return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      fn,
+      (typeof fn === 'function') ? fn : fn.value,
       {
         path,
         method: 'PATCH'
@@ -136,7 +137,7 @@ export function Patch(path? : string){
 export function Delete(path? : string){
   return (target : any, name : string, fn : any) => {
     addMetadataRoute(
-      fn,
+      (typeof fn === 'function') ? fn : fn.value,
       {
         path,
         method: 'DELETE'

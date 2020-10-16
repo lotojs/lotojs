@@ -54,6 +54,7 @@ export class Route{
         const methods = UtilRouter.normalizeMethods(
           routeRef.prototype.metadata.route.method || []
         );
+        console.log(methods)
         methods.forEach((value) => {
           if(!(typeof this._expressRef[value] === 'function')){
             throw new Error(`Method '${value}' not valid`);
