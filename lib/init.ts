@@ -28,7 +28,7 @@ export interface AppLoaderOptionsInterface{
 
 export type AppLoadOptions = AppLoaderOptionsInterface
 
-class AppLoader{
+export class AppLoader{
 
 	private _router : Router;
 	private _serverHttp : any;
