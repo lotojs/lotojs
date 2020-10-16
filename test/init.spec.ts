@@ -1,7 +1,5 @@
-import { Controller, Get } from "../lib/controller";
 import { App, AppLoader } from "../lib/init";
-import { Package } from "../lib/package";
-import { MainTest } from "./simple_base";
+import { MainTest } from "./structure/simple_base";
 
 describe('App', () => {
 

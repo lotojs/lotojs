@@ -1,5 +1,5 @@
-import { Controller, Get } from "../lib/controller";
-import { Package } from "../lib/package";
+import { Controller, Get } from "../../lib/controller";
+import { Package } from "../../lib/package";
 
 @Controller()
 export class TestController{

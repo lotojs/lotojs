@@ -36,7 +36,6 @@ function addMetadataRoute(
   target : any,
   options : any = {}
 ){
-  // console.log(target)
   const hasMetadata = Object.prototype.hasOwnProperty.call(
     target.prototype, 
     'metadata'
