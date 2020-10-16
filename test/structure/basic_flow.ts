@@ -9,12 +9,14 @@ export class TestController{
     })
     @Get("/test")
     test(
-        // @Response()
-        // res : any,
+        @Response()
+        res : any,
         @Request()
         req : any
     ){
-        // res.send(req.app.foo);
+        res.json({
+            data: req.app.foo
+        });
     }
 
 }

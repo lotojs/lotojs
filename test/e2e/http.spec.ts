@@ -13,10 +13,11 @@ describe('End to End', () => {
         await instance.run([
             MainTest
         ]);
-        // const response = Supertest(instance.express)
-        //                     .get('/test')
-        // console.log(response)
-
+        const response = await Supertest(instance.express)
+                            .get('/test');
+        expect(response.body).toStrictEqual({
+            data: 'bar'
+        });
     });
 
 });
