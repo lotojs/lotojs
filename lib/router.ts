@@ -11,7 +11,6 @@ export class Router{
   private _expressRef : Express.Express = Express();
 
   public loadRoutes(packages : any[]){
-    this._expressRef.get('f', () => {})
     packages.forEach((value, index) => {
       const instance = new Route(
         this._expressRef
@@ -39,10 +38,10 @@ export class Route{
   ){}
 
   public load(){
-    const controllers = this._package.prototype.controllers;
-    const inputs = this._package.prototype.inputs;
-    const outputs = this._package.prototype.outputs;
-    const interceptor = this._package.prototype.interceptor;
+    const controllers = this._package.prototype.metadata.controllers;
+    const inputs = this._package.prototype.metadata.inputs;
+    const outputs = this._package.prototype.metadata.outputs;
+    const interceptor = this._package.prototype.metadata.interceptor;
     for(const key in controllers){
       const controllerRef = controllers[key];
       for(const key in controllerRef.prototype){
@@ -54,13 +53,12 @@ export class Route{
         const methods = UtilRouter.normalizeMethods(
           routeRef.prototype.metadata.route.method || []
         );
-        console.log(methods)
         methods.forEach((value) => {
           if(!(typeof this._expressRef[value] === 'function')){
             throw new Error(`Method '${value}' not valid`);
           }
           const path = UtilRouter.normalizePath(
-            controllerRef.prototype.route.path,
+            controllerRef.prototype.metadata.route.path,
             routeRef.prototype.metadata.route.path
           );
           const inputsRef = [
@@ -366,6 +364,8 @@ export class UtilRouter{
   public static normalizePath(prefix : string | RegExp, path : string | RegExp){
     let normalizePrefix;
     let normalizePath;
+    prefix = prefix || '';
+    path = path || '';
     if(typeof prefix === 'string'){
       normalizePrefix = (prefix || '')
                               .replace(/\/{2,}/g, '/')
@@ -410,11 +410,11 @@ export class UtilRouter{
   }
 
   public static normalizeMethods(methods : string[]){
-    return methods.map((value) => {
-      return value.toLowerCase();
-    }).filter((value, index) => {
+    return methods.filter((value, index) => {
       const firstIndex = methods.indexOf(value);
       return index === firstIndex;
+    }).map((value) => {
+      return value.toLowerCase();
     });
   }
 

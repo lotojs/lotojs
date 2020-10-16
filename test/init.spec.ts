@@ -23,8 +23,9 @@ describe('App', () => {
         await instance.run([
             MainTest
         ]);
-        console.log(instance.express._router.stack)
-        // expect(instance instanceof AppLoader).toBe(true);
+        instance.express._router.stack.forEach((value) => {
+            if(value.route) expect(value.route.path).toBe('/test')
+        });
     });
 
 });
