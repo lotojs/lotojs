@@ -17,7 +17,7 @@ export function Package(
     target.prototype.metadata = {
       id,
       type,
-      base: packageOptions.base,
+      base: packageOptions.base || '',
       controllers: packageOptions.controllers || [],
       inputs: packageOptions.inputs || [],
       outputs: packageOptions.outputs || [],
