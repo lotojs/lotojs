@@ -27,10 +27,12 @@ describe('Util Router', () => {
   describe('normalizePath', () => {
 
     test(`When entering a 'prefix' and 'path' in string format, return the same normalized`, () => {
+      const base = '';
       const prefix = "/INDEX////"
       const path = "///:id///"
       const normalize = '/index/:id'
       const result = UtilRouter.normalizePath(
+        base,
         prefix,
         path
       );
@@ -39,12 +41,14 @@ describe('Util Router', () => {
     });
 
     test(`When entering a 'prefix' in regex format, return concat regex`, () => {
+      const base = '';
       const prefix = /index/;
       const path = "///:id///"
       const normalize = new RegExp(
         prefix.source + EscapeStringReg('/:id')
       );
       const result = UtilRouter.normalizePath(
+        base,
         prefix,
         path
       );
@@ -53,12 +57,14 @@ describe('Util Router', () => {
     });
 
     test(`When entering a 'path' in regex format, return concat regex`, () => {
+      const base = '';
       const prefix = '/index';
       const path = /\/:id/;
       const normalize = new RegExp(
         EscapeStringReg(prefix) + path.source
       );
       const result = UtilRouter.normalizePath(
+        base,
         prefix,
         path
       );
