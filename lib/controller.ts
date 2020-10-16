@@ -265,6 +265,7 @@ export function In(){
 
 export function Input(call : any){
   return (target : any, name : string, fn : any) => {
+    fn = (typeof fn === 'function') ? fn : fn.value;
     const hasMetadata = Object.prototype.hasOwnProperty.call(
       fn.prototype, 
       'metadata'
@@ -309,6 +310,7 @@ export function Input(call : any){
 
 export function Output(call : any){
   return (target : any, name : string, fn : any) => {
+    fn = (typeof fn === 'function') ? fn : fn.value;
     const hasMetadata = Object.prototype.hasOwnProperty.call(
       fn.prototype, 
       'metadata'
@@ -355,6 +357,7 @@ export function Interceptor(
   call : any
 ){
   return (target : any, name : string, fn : any) => {
+    fn = (typeof fn === 'function') ? fn : fn.value;
 		const hasMetadata = Object.prototype.hasOwnProperty.call(
       fn.prototype, 
       'metadata'

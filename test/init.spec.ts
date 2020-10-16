@@ -23,7 +23,7 @@ describe('App', () => {
         await instance.run([
             MainTest
         ]);
-        console.log(instance.express)
+        console.log(instance.express._router.stack)
         // expect(instance instanceof AppLoader).toBe(true);
     });
 
