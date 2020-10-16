@@ -72,6 +72,22 @@ describe('Util Router', () => {
       expect((result as RegExp).source).toBe(normalize.source);
     });
 
+    test(`When entering a 'base' in regex format, return concat regex`, () => {
+      const base = /\/base/;
+      const prefix = '/index';
+      const path = /\/:id/;
+      const normalize = new RegExp(
+        base.source + EscapeStringReg(prefix) + path.source
+      );
+      const result = UtilRouter.normalizePath(
+        base,
+        prefix,
+        path
+      );
+      expect(result instanceof RegExp).toBe(true);
+      expect((result as RegExp).source).toBe(normalize.source);
+    });
+
   });
 
   describe('normalizeMethods', () => {
