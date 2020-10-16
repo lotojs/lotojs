@@ -38,6 +38,7 @@ export class Route{
   ){}
 
   public load(){
+    const base = this._package.prototype.metadata.base;
     const controllers = this._package.prototype.metadata.controllers;
     const inputs = this._package.prototype.metadata.inputs;
     const outputs = this._package.prototype.metadata.outputs;
@@ -361,11 +362,21 @@ export class UtilRouter{
     ) && fn.prototype.metadata.type === 'hook';
   }
 
-  public static normalizePath(prefix : string | RegExp, path : string | RegExp){
+  public static normalizePath(base : string | RegExp, prefix : string | RegExp, path : string | RegExp){
+    let normalizeBase;
     let normalizePrefix;
     let normalizePath;
+    base = base || '';
     prefix = prefix || '';
     path = path || '';
+    if(typeof base === 'string'){
+      normalizeBase = (base || '')
+                              .replace(/\/{2,}/g, '/')
+                              .replace(/\/+$/g, '')
+                              .replace(/\s/g, '')
+                              .toLowerCase()
+                              .trim();
+    }
     if(typeof prefix === 'string'){
       normalizePrefix = (prefix || '')
                               .replace(/\/{2,}/g, '/')
@@ -387,10 +398,18 @@ export class UtilRouter{
       typeof prefix === 'string' &&
       typeof path === 'string'
     ){
-      return (normalizePrefix + `/${normalizePath}`)
+      return (normalizeBase + normalizePrefix + `/${normalizePath}`)
                 .replace(/\/+$/g, '');
     }
     return new RegExp(
+      (
+        (base instanceof RegExp) ? 
+          base.source : 
+          EscapeStringReg(
+            normalizeBase.replace(/\/+$/g, '')
+          )
+      ) 
+      +
       (
         (prefix instanceof RegExp) ? 
           prefix.source : 
