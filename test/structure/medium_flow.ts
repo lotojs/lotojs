@@ -1,3 +1,4 @@
+const morgan = require('morgan');
 import { Controller, Get, Input, Obtain, Pipe, Request, Response, Save } from "../../lib/controller";
 import { Package } from "../../lib/package";
 import { ContextRoute } from "../../lib/router";
@@ -30,6 +31,7 @@ export class TestController{
 
 @Package({
     inputs: [
+        morgan(),
         Save(
             (req, res, next) => {
                 next();

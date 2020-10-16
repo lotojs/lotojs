@@ -1,6 +1,6 @@
 import * as Supertest from 'supertest';
 import { App } from '../../lib/init';
-import { MainTest } from '../structure/basic_flow';
+import { MainTest as BF } from '../structure/basic_flow';
 import { MainTest as MF1 } from '../structure/medium_flow';
 
 describe('End to End', () => {
@@ -12,7 +12,7 @@ describe('End to End', () => {
             }
         );
         await instance.run([
-            MainTest
+            BF
         ]);
         const response = await Supertest(instance.express)
                             .get('/test');
