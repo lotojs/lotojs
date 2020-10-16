@@ -8,9 +8,10 @@ import { Container } from 'typescript-ioc';
 
 export class Router{
 
-  private _expressRef : any = Express();
+  private _expressRef : Express.Express = Express();
 
   public loadRoutes(packages : any[]){
+    this._expressRef.get('f', () => {})
     packages.forEach((value, index) => {
       const instance = new Route(
         this._expressRef

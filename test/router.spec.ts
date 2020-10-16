@@ -136,7 +136,9 @@ describe('Route Request', () => {
 
     test(`When the 'initContext' function is called, initialize the context values`, async () => {
       const controller = jest.fn();
-      const route = jest.fn();
+      const route = () => {
+        return {};
+      };
       const setGet = Get();
       setGet(undefined, undefined, route);
       const instance = new RouteRequest(
@@ -150,10 +152,10 @@ describe('Route Request', () => {
       );
       await instance.execute();
       expect(instance.context).toHaveProperty('id', route.prototype.metadata.id);
-      expect(instance.context).toHaveProperty('input', null);
+      expect(instance.context).toHaveProperty('input', {});
       expect(instance.context).toHaveProperty('next', false);
       expect(instance.context).toHaveProperty('save', {});
-      expect(instance.context).toHaveProperty('params', null);
+      expect(instance.context).toHaveProperty('params', {});
     });
 
   });
@@ -186,14 +188,14 @@ describe('Route Request', () => {
       const middleware = (req, res, next, context) => {
         req.check = true;
       }
-      const setInput = Input(middleware);
-      setInput(undefined, undefined, route);
       const instance = new RouteRequest(
         {} as any,
         {} as any,
         controller,
         route,
-        [],
+        [
+          middleware
+        ],
         [],
         undefined
       );
@@ -233,14 +235,14 @@ describe('Route Request', () => {
       const middleware = (req, res, next, context) => {
         req.check = true;
       }
-      const setInput = Output(middleware);
-      setInput(undefined, undefined, route);
       const instance = new RouteRequest(
         {} as any,
         {} as any,
         controller,
         route,
-        [],
+        [
+          middleware
+        ],
         [],
         undefined
       );
@@ -425,16 +427,16 @@ describe('Route Request', () => {
       };
       const setGet = Get();
       setGet(undefined, undefined, route);
-      const setInput = Input(
-        Save(
-          (req, res, next) => {
-            next();
-            return 'a';
-          },
-          'name'
-        )
-      );
-      setInput(undefined, undefined, route);
+      // const setInput = Input(
+      //   Save(
+      //     (req, res, next) => {
+      //       next();
+      //       return 'a';
+      //     },
+      //     'name'
+      //   )
+      // );
+      // setInput(undefined, undefined, route);
       const setRequest = Request();
       setRequest(route, 'myvar', 0);
       const setIn = In();
@@ -446,7 +448,15 @@ describe('Route Request', () => {
         res.res,
         controller,
         route,
-        [],
+        [
+          Save(
+            (req, res, next) => {
+              next();
+              return 'a';
+            },
+            'name'
+          )
+        ],
         [],
         undefined
       );
