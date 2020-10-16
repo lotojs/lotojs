@@ -59,6 +59,7 @@ export class Route{
             throw new Error(`Method '${value}' not valid`);
           }
           const path = UtilRouter.normalizePath(
+            base,
             controllerRef.prototype.metadata.route.path,
             routeRef.prototype.metadata.route.path
           );
