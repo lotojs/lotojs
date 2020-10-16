@@ -461,6 +461,7 @@ export function Obtain(
   key : string,
 ){
   const execute = async (req, res, next, context : ContextRoute) => {
+    next();
     return context.save[key];
   };
   const setHook = Hook();
