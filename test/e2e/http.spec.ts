@@ -1,7 +1,8 @@
 import * as Supertest from 'supertest';
 import { App } from '../../lib/init';
 import { MainTest as BF } from '../structure/basic_flow';
-import { MainTest as MF1, MainTest2 as MF2 } from '../structure/express_and_input';
+import { MainTest as MF1 } from '../structure/express_and_input';
+import { MainTest as MF2 } from '../structure/simple_output';
 
 describe('End to End', () => {
 

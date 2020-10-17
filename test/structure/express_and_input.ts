@@ -1,4 +1,4 @@
-const morgan = require('morgan');
+import * as morgan from 'morgan';
 import { Controller, Get, Input, Obtain, Pipe, Request, Response, Save } from "../../lib/controller";
 import { Package } from "../../lib/package";
 import { ContextRoute } from "../../lib/router";
@@ -45,33 +45,3 @@ export class TestController{
     ]
 })
 export class MainTest{}
-
-@Controller()
-export class TestController2{
-
-    @Get("/test")
-    test(
-        @Response()
-        res : any,
-        @Request()
-        req : any
-    ){
-        return {
-            data: 'bar'
-        }
-    }
-
-}
-
-@Package({
-    outputs: [
-        (req, res, next, context : ContextRoute) => {
-            next();
-            res.json(context.input);
-        }
-    ],
-    controllers: [
-        TestController2
-    ]
-})
-export class MainTest2{}
