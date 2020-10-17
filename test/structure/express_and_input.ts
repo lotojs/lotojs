@@ -45,3 +45,33 @@ export class TestController{
     ]
 })
 export class MainTest{}
+
+@Controller()
+export class TestController2{
+
+    @Get("/test")
+    test(
+        @Response()
+        res : any,
+        @Request()
+        req : any
+    ){
+        return {
+            data: 'bar'
+        }
+    }
+
+}
+
+@Package({
+    outputs: [
+        (req, res, next, context : ContextRoute) => {
+            next();
+            res.json(context.input);
+        }
+    ],
+    controllers: [
+        TestController2
+    ]
+})
+export class MainTest2{}
