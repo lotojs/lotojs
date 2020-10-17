@@ -61,7 +61,7 @@ function addMetadataRoute(
         ...target.prototype.metadata,
         ...{
           route: {
-            ...target.prototype.metadata.route,
+            path: target.prototype.metadata.route.path || path,
             method: [
               ...target.prototype.metadata.route.method,
               method
