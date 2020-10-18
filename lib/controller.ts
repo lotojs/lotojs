@@ -145,6 +145,18 @@ export function Delete(path? : string){
   }
 }
 
+export function Options(path? : string){
+  return (target : any, name : string, fn : any) => {
+    addMetadataRoute(
+      (typeof fn === 'function') ? fn : fn.value,
+      {
+        path,
+        method: 'OPTIONS'
+      }
+    );
+  }
+}
+
 /****************** */
 
 function addMetadataParams(
