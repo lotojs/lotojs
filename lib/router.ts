@@ -71,6 +71,7 @@ export class Route{
             ...(routeRef.prototype.metadata.input || [])
           ];
           const outputsRef = [
+            ...(UtilRouter.normalizeOutputsInherits(inherits)),
             ...(outputs || []),
             ...(routeRef.prototype.metadata.output || [])
           ];
