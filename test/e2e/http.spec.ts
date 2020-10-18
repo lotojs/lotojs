@@ -36,7 +36,8 @@ describe('End to End', () => {
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
-            data: 'bar+'
+            data: 'bar+',
+            original: 'bar'
         });
     });
 

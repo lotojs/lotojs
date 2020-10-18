@@ -1,5 +1,5 @@
 import * as morgan from 'morgan';
-import { Controller, Get, Input, Obtain, Pipe, Request, Response, Save } from "../../lib/controller";
+import { ContextSave, Controller, Get, Input, Obtain, Pipe, Request, Response, Save } from "../../lib/controller";
 import { Package } from "../../lib/package";
 import { ContextRoute } from "../../lib/router";
 
@@ -20,10 +20,13 @@ export class TestController{
         @Response()
         res : any,
         @Request()
-        req : any
+        req : any,
+        @ContextSave('foo')
+        foo : String
     ){
         res.json({
-            data: req.app.foo
+            data: req.app.foo,
+            original: foo
         });
     }
 
