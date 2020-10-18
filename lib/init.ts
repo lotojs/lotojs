@@ -57,7 +57,7 @@ export class AppLoader{
 	}
 
 	public async run(
-		packages : any[]
+		packages : {new (...args : any[])}[]
 	){
 		this._router.loadRoutes(
 			packages

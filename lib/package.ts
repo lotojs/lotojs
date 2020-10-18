@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 
 export interface PackageOptions{
   base?: string | RegExp,
-  controllers? : any[],
+  controllers? : {new (...args : any[])}[],
   inputs? : ((...args : any[]) => any)[],
   outputs? : ((...args : any[]) => any)[],
   interceptor? : ((...args : any[]) => any)

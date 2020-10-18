@@ -15,7 +15,7 @@ describe('End to End', () => {
             }
         );
         await instance.run([
-            BF
+            BF,
         ]);
         const response = await Supertest(instance.express)
                             .get('/test');
