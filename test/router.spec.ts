@@ -203,6 +203,53 @@ describe('Util Router', () => {
 
   });
 
+  test(`When includeOutputs is set to false, return only elements with reverse condition`, () => {
+    const result = UtilRouter.normalizeOutputsInherits([
+      {
+        package: ({
+          prototype: {
+            metadata: {
+              outputs: [
+                () => {}
+              ]
+            }
+          }
+        } as any),
+        includeOutputs: false
+      },
+      {
+        package: ({
+          prototype: {
+            metadata: {
+              outputs: [
+                () => {},
+                () => {}
+              ]
+            }
+          }
+        } as any),
+        includeOutputs: true
+      },
+      {
+        package: ({
+          prototype: {
+            metadata: {
+              outputs: [
+                () => {},
+                () => {}
+              ]
+            }
+          }
+        } as any),
+        includeOutputs: true
+      }
+    ]
+    );
+    expect(result.length).toBe(4);
+  });
+
+});
+
 })
 
 

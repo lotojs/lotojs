@@ -455,6 +455,16 @@ export class UtilRouter{
     return [].concat(...result);
   }
 
+  public static normalizeOutputsInherits(inherits : PackageOptionsInherits[]){
+    const inheritsRef = inherits || [];
+    const result = inheritsRef.filter((value, index) => {
+      return value.includeOutputs === undefined || value.includeOutputs === true;
+    }).map((value) => {
+      return value.package.prototype.metadata.outputs || [];
+    });
+    return [].concat(...result);
+  }
+
 }
 
 export interface ContextRoute{
