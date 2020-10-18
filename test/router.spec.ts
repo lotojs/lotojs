@@ -250,8 +250,6 @@ describe('Util Router', () => {
 
 });
 
-})
-
 
 describe('Route Request', () => {
 
