@@ -157,6 +157,18 @@ export function Options(path? : string){
   }
 }
 
+export function Connect(path? : string){
+  return (target : any, name : string, fn : any) => {
+    addMetadataRoute(
+      (typeof fn === 'function') ? fn : fn.value,
+      {
+        path,
+        method: 'CONNECT'
+      }
+    );
+  }
+}
+
 /****************** */
 
 function addMetadataParams(
