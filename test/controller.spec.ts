@@ -317,7 +317,10 @@ describe('@Request', () => {
     useRequest(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'request'
+      0: {
+        type: 'request',
+        param: undefined
+      }
     });
   });
 
@@ -332,7 +335,10 @@ describe('@Response', () => {
     useResponse(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'response'
+      0: {
+        type: 'response',
+        param: undefined
+      }
     });
   });
 
@@ -347,7 +353,10 @@ describe('@Body', () => {
     useBody(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'body'
+      0: {
+        type: 'body',
+        param: undefined
+      }
     });
   });
 
@@ -362,7 +371,10 @@ describe('@Header', () => {
     useHeader(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'header'
+      0: {
+        type: 'header',
+        param: undefined
+      }
     });
   });
 
@@ -377,7 +389,10 @@ describe('@Parameters', () => {
     useParameters(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'parameters'
+      0: {
+        type: 'parameters',
+        param: undefined
+      }
     });
   });
 
@@ -392,7 +407,10 @@ describe('@In', () => {
     useIn(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'context'
+      0: {
+        type: 'context',
+        param: undefined
+      }
     });
   });
 
@@ -403,11 +421,16 @@ describe('@ContextSave', () => {
   test('When @In is inserted, insert found parameters in metadata', async () => {
     const req : any = {};
     const fn = () => {}
-    const useContextSave = ContextSave();
+    const useContextSave = ContextSave('bar');
     useContextSave(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
-      0: 'context'
+      0: {
+        type: 'contextsave',
+        param: {
+          key: 'bar'
+        }
+      }
     });
   });
 
