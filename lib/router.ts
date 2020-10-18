@@ -5,6 +5,7 @@ import {
   getReasonPhrase,
 } from 'http-status-codes';
 import { Container } from 'typescript-ioc';
+import { PackageOptions, PackageOptionsInherits } from './package';
 
 export class Router{
 
@@ -43,6 +44,7 @@ export class Route{
     const inputs = this._package.prototype.metadata.inputs;
     const outputs = this._package.prototype.metadata.outputs;
     const interceptor = this._package.prototype.metadata.interceptor;
+    const inherits = this._package.prototype.metadata.inherits;
     for(const key in controllers){
       const controllerRef = controllers[key];
       for(const key in controllerRef.prototype){
@@ -64,6 +66,7 @@ export class Route{
             routeRef.prototype.metadata.route.path
           );
           const inputsRef = [
+            ...(UtilRouter.normalizeInputsInherits(inherits)),
             ...(inputs || []),
             ...(routeRef.prototype.metadata.input || [])
           ];
@@ -440,6 +443,16 @@ export class UtilRouter{
     }).map((value) => {
       return value.toLowerCase();
     });
+  }
+
+  public static normalizeInputsInherits(inherits : PackageOptionsInherits[]){
+    const inheritsRef = inherits || [];
+    const result = inheritsRef.filter((value, index) => {
+      return value.includeInputs === undefined || value.includeInputs === true;
+    }).map((value) => {
+      return value.package.prototype.metadata.inputs || [];
+    });
+    return [].concat(...result);
   }
 
 }

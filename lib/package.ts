@@ -1,19 +1,21 @@
 import { nanoid } from 'nanoid';
 
+interface PackageOptionsInheritsInterface{
+  package: {new (...args : any[])},
+  includeInputs?: boolean,
+  includeOutputs?: boolean,
+  includeInterceptor?: boolean,
+}
+
+export type PackageOptionsInherits = PackageOptionsInheritsInterface;
+
 export interface PackageOptions{
   base?: string | RegExp,
   controllers? : {new (...args : any[])}[],
   inputs? : ((...args : any[]) => any)[],
   outputs? : ((...args : any[]) => any)[],
   interceptor? : ((...args : any[]) => any),
-  inherits?: (
-    {
-      package: {new (...args : any[])},
-      includeInputs?: boolean,
-      includeOutputs?: boolean,
-      includeInterceptor?: boolean,
-    }
-    )[],
+  inherits?: PackageOptionsInherits[],
 }
 
 export function Package(

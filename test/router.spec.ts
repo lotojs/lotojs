@@ -149,6 +149,60 @@ describe('Util Router', () => {
 
   });
 
+  describe('normalizeInputsInherits', () => {
+
+    test(`When an empty value is passed, return an empty array`, () => {
+      const result = UtilRouter.normalizeInputsInherits(undefined);
+      expect(result instanceof Array).toBe(true);
+    });
+
+    test(`When includeInputs is set to false, return only elements with reverse condition`, () => {
+      const result = UtilRouter.normalizeInputsInherits([
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                inputs: [
+                  () => {}
+                ]
+              }
+            }
+          } as any),
+          includeInputs: false
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                inputs: [
+                  () => {},
+                  () => {}
+                ]
+              }
+            }
+          } as any),
+          includeInputs: true
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                inputs: [
+                  () => {},
+                  () => {}
+                ]
+              }
+            }
+          } as any),
+          includeInputs: true
+        }
+      ]
+      );
+      expect(result.length).toBe(4);
+    });
+
+  });
+
 })
 
 
