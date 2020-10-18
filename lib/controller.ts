@@ -181,6 +181,19 @@ export function Trace(path? : string){
   }
 }
 
+export function All(path? : string){
+  return (target : any, name : string, fn : any) => {
+    addMetadataRoute(
+      (typeof fn === 'function') ? fn : fn.value,
+      {
+        path,
+        method: 'ALL'
+      }
+    );
+  }
+}
+
+
 /****************** */
 
 function addMetadataParams(
