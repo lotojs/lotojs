@@ -5,7 +5,15 @@ export interface PackageOptions{
   controllers? : {new (...args : any[])}[],
   inputs? : ((...args : any[]) => any)[],
   outputs? : ((...args : any[]) => any)[],
-  interceptor? : ((...args : any[]) => any)
+  interceptor? : ((...args : any[]) => any),
+  inherits?: (
+    {
+      package: {new (...args : any[])},
+      includeInputs?: boolean,
+      includeOutputs?: boolean,
+      includeInterceptor?: boolean,
+    }
+    )[],
 }
 
 export function Package(
