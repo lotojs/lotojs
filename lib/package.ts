@@ -29,7 +29,8 @@ export function Package(
       controllers: packageOptions.controllers || [],
       inputs: packageOptions.inputs || [],
       outputs: packageOptions.outputs || [],
-      interceptor: packageOptions.interceptor
+      interceptor: packageOptions.interceptor,
+      inherits: packageOptions.inherits,
     }
   }
 }
