@@ -203,49 +203,148 @@ describe('Util Router', () => {
 
   });
 
-  test(`When includeOutputs is set to false, return only elements with reverse condition`, () => {
-    const result = UtilRouter.normalizeOutputsInherits([
-      {
-        package: ({
-          prototype: {
-            metadata: {
-              outputs: [
-                () => {}
-              ]
+  describe('normalizeOutputsInherits', () => {
+
+    test(`When includeOutputs is set to false, return only elements with reverse condition`, () => {
+      const result = UtilRouter.normalizeOutputsInherits([
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                outputs: [
+                  () => {}
+                ]
+              }
             }
-          }
-        } as any),
-        includeOutputs: false
-      },
-      {
-        package: ({
-          prototype: {
-            metadata: {
-              outputs: [
-                () => {},
-                () => {}
-              ]
+          } as any),
+          includeOutputs: false
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                outputs: [
+                  () => {},
+                  () => {}
+                ]
+              }
             }
-          }
-        } as any),
-        includeOutputs: true
-      },
-      {
-        package: ({
-          prototype: {
-            metadata: {
-              outputs: [
-                () => {},
-                () => {}
-              ]
+          } as any),
+          includeOutputs: true
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                outputs: [
+                  () => {},
+                  () => {}
+                ]
+              }
             }
-          }
-        } as any),
-        includeOutputs: true
-      }
-    ]
-    );
-    expect(result.length).toBe(4);
+          } as any),
+          includeOutputs: true
+        }
+      ]
+      );
+      expect(result.length).toBe(4);
+    });
+
+  });
+
+  describe('normalizeBaseInherits', () => {
+
+    test(`When an empty value is passed, return an empty string`, () => {
+      const result = UtilRouter.normalizeBaseInherits(undefined);
+      expect(result).toBe('');
+    });
+
+    test(`When includeBase is set to false, return only elements with reverse condition`, () => {
+      const result = UtilRouter.normalizeBaseInherits([
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                base: '/a'
+              }
+            }
+          } as any),
+          includeBase: false
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                base: '/b///c////'
+              }
+            }
+          } as any),
+          includeBase: true
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                base: '/d/:id'
+              }
+            }
+          } as any),
+          includeBase: true
+        }
+      ]
+      );
+      expect(result).toBe('/b/c/d/:id');
+    });
+
+  });
+
+  describe('normalizeOutputsInherits', () => {
+
+    test(`When includeOutputs is set to false, return only elements with reverse condition`, () => {
+      const result = UtilRouter.normalizeOutputsInherits([
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                outputs: [
+                  () => {}
+                ]
+              }
+            }
+          } as any),
+          includeOutputs: false
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                outputs: [
+                  () => {},
+                  () => {}
+                ]
+              }
+            }
+          } as any),
+          includeOutputs: true
+        },
+        {
+          package: ({
+            prototype: {
+              metadata: {
+                outputs: [
+                  () => {},
+                  () => {}
+                ]
+              }
+            }
+          } as any),
+          includeOutputs: true
+        }
+      ]
+      );
+      expect(result.length).toBe(4);
+    });
+
   });
 
 });

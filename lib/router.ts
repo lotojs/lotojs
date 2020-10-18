@@ -61,7 +61,7 @@ export class Route{
             throw new Error(`Method '${value}' not valid`);
           }
           const path = UtilRouter.normalizePath(
-            base,
+            (UtilRouter.normalizeBaseInherits(inherits)) + base,
             controllerRef.prototype.metadata.route.path,
             routeRef.prototype.metadata.route.path
           );
@@ -464,6 +464,55 @@ export class UtilRouter{
       return value.package.prototype.metadata.outputs || [];
     });
     return [].concat(...result);
+  }
+
+  public static normalizeBaseInherits(inherits : PackageOptionsInherits[]){
+    const inheritsRef = inherits || [];
+    const result = inheritsRef.filter((value, index) => {
+      return value.includeBase === true;
+    }).map((value) => {
+      return value.package.prototype.metadata.base || '';
+    });
+    if(result.length === 0){
+      return '';
+    }
+    return ([''].concat(...result)).reduce((acum : any, value : any) => {
+      let normalizePrefix;
+      if(typeof value === 'string'){
+        normalizePrefix = (value || '')
+                                .replace(/\/{2,}/g, '/')
+                                .replace(/\/+$/g, '')
+                                .replace(/\s/g, '')
+                                .toLowerCase()
+                                .trim();
+      }
+      if(
+        typeof acum === 'string' &&
+        typeof value === 'string'
+      ){
+        return (acum + normalizePrefix)
+                  .replace(/\/+$/g, '');
+      }
+      if(typeof acum === 'string' &&
+        value instanceof RegExp){
+          return new RegExp(
+            EscapeStringReg(acum) + value.source
+          )
+      }
+      if(acum instanceof RegExp &&
+        typeof value === 'string'){
+          return new RegExp(
+            acum.source + EscapeStringReg(value)
+          )
+      }
+      if(acum instanceof RegExp &&
+        value instanceof RegExp){
+          return new RegExp(
+            acum.source + value.source
+          )
+      }
+      return acum;
+    });
   }
 
 }
