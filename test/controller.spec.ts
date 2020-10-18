@@ -1,5 +1,5 @@
 import { Container, Singleton } from "typescript-ioc";
-import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Response, Obtain, Request, Body, Header, Parameters, In } from "../lib/controller";
+import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Response, Obtain, Request, Body, Header, Parameters, In, ContextSave } from "../lib/controller";
 import { ContextRoute } from "../lib/router";
 
 describe('@Controller', () => {
@@ -390,6 +390,21 @@ describe('@In', () => {
     const fn = () => {}
     const useIn = In();
     useIn(fn, 'myvar', 0);
+    expect(fn.prototype).toHaveProperty('metadata.params');
+    expect(fn.prototype.metadata.params).toStrictEqual({
+      0: 'context'
+    });
+  });
+
+});
+
+describe('@ContextSave', () => {
+
+  test('When @In is inserted, insert found parameters in metadata', async () => {
+    const req : any = {};
+    const fn = () => {}
+    const useContextSave = ContextSave();
+    useContextSave(fn, 'myvar', 0);
     expect(fn.prototype).toHaveProperty('metadata.params');
     expect(fn.prototype.metadata.params).toStrictEqual({
       0: 'context'

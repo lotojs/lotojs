@@ -252,7 +252,7 @@ function addMetadataParams(
 export function Request(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'request'
     );
@@ -262,7 +262,7 @@ export function Request(){
 export function Response(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'response'
     );
@@ -272,7 +272,7 @@ export function Response(){
 export function Body(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'body'
     );
@@ -282,7 +282,7 @@ export function Body(){
 export function Header(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'header'
     );
@@ -292,7 +292,7 @@ export function Header(){
 export function Parameters(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'parameters'
     );
@@ -302,7 +302,7 @@ export function Parameters(){
 export function Query(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'query'
     );
@@ -312,7 +312,7 @@ export function Query(){
 export function In(){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'context'
     );
@@ -322,7 +322,7 @@ export function In(){
 export function ContextSave(key? : string){
   return (target : any, name : string, index : number) => {
     addMetadataParams(
-      target[name],
+      (typeof target === 'function') ? target : target[name],
       index,
       'contextsave',
       {
