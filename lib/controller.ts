@@ -309,6 +309,16 @@ export function In(){
   }
 }
 
+export function ContextSave(key? : string){
+  return (target : any, name : string, index : number) => {
+    addMetadataParams(
+      target[name],
+      index,
+      'contextsave'
+    );
+  }
+}
+
 /***************** */
 
 export function Input(call : any){
