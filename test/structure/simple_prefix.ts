@@ -1,10 +1,10 @@
-import { Controller, Get, Input, Obtain, Pipe, Post, Request, Response, Save } from "../../lib/controller";
+import { Controller, Get, Post, Request, Response } from "../../lib/controller";
 import { Package } from "../../lib/package";
 
-@Controller()
+@Controller("/test")
 export class TestController{
 
-    @Get("/test")
+    @Get()
     @Post()
     test(
         @Response()
@@ -20,6 +20,7 @@ export class TestController{
 }
 
 @Package({
+    base: '/base',
     controllers: [
         TestController
     ]
