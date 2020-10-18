@@ -5,6 +5,7 @@ interface PackageOptionsInheritsInterface{
   includeInputs?: boolean,
   includeOutputs?: boolean,
   includeInterceptor?: boolean,
+  includeBase?: boolean,
 }
 
 export type PackageOptionsInherits = PackageOptionsInheritsInterface;
