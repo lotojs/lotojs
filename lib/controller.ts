@@ -199,7 +199,8 @@ export function All(path? : string){
 function addMetadataParams(
   target: any,
   index: number,
-  type: string
+  type: string,
+  param?: any
 ){
   const hasMetadata = Object.prototype.hasOwnProperty.call(
     target.prototype, 
@@ -217,7 +218,10 @@ function addMetadataParams(
         ...{
           params: {
             ...target.prototype.metadata.params,
-            [index]: type
+            [index]: {
+              type,
+              param
+            },
           }
         }
       }
@@ -226,7 +230,10 @@ function addMetadataParams(
     target.prototype.metadata = {
       ...target.prototype.metadata,
       params: {
-        [index]: type
+        [index]: {
+          type,
+          param
+        },
       }
     }
     return;
@@ -234,7 +241,10 @@ function addMetadataParams(
   target.prototype.metadata = {
     id,
     params: {
-      [index]: type
+      [index]: {
+        type,
+        param
+      },
     }
   };
 }
@@ -314,7 +324,10 @@ export function ContextSave(key? : string){
     addMetadataParams(
       target[name],
       index,
-      'contextsave'
+      'contextsave',
+      {
+        key
+      }
     );
   }
 }

@@ -213,7 +213,8 @@ export class RouteRequest{
     const paramsArray = [];
     for(const key in getParams){
       let ref;
-      const type = getParams[key];
+      const type = getParams[key].type;
+      const param = getParams[key].param || {};
       switch(type){
         case 'request':
           ref = this.req
@@ -237,6 +238,9 @@ export class RouteRequest{
           ref = {
             save: this.context.save
           }
+        break;
+        case 'contextsave':
+          ref = this.context.save[param.key]
         break;
       }
       paramsArray.push(
