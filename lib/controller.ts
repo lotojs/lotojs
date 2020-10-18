@@ -169,6 +169,18 @@ export function Connect(path? : string){
   }
 }
 
+export function Trace(path? : string){
+  return (target : any, name : string, fn : any) => {
+    addMetadataRoute(
+      (typeof fn === 'function') ? fn : fn.value,
+      {
+        path,
+        method: 'TRACE'
+      }
+    );
+  }
+}
+
 /****************** */
 
 function addMetadataParams(
