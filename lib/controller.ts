@@ -543,6 +543,43 @@ export function Obtain(
 
 /********************* */
 
+export interface Middleware{
+  middleware(req, res, next, context) : any
+}
+
+export enum MiddlewarePattern{
+  Singleton
+}
+
+export function DefineMiddleware(pattern : MiddlewarePattern = MiddlewarePattern.Singleton){
+  return (target : any, name : string, fn : any) => {
+    fn = (typeof fn === 'function') ? fn : fn.value;
+    const hasMetadata = Object.prototype.hasOwnProperty.call(
+      fn.prototype, 
+      'metadata'
+    );
+    const id = nanoid();
+    if(hasMetadata){
+      fn.prototype.metadata = {
+        ...fn.prototype.metadata,
+        middleware: {
+          pattern
+        },
+      }
+      return;
+    }
+    fn.prototype.metadata = {
+      id,
+      middleware: {
+        pattern
+      },
+    };
+  }
+}
+
+
+/******************** */
+
 interface ActionInterface<T, U, Y> {
   Request : T,
   Response : U,
