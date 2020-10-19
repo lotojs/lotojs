@@ -5,6 +5,7 @@ import { MainTest as MF1 } from '../structure/express_and_input';
 import { MainTest as MF2 } from '../structure/simple_output';
 import { MainTest as MF3 } from '../structure/multiple_methods';
 import { MainTest as MF4 } from '../structure/simple_prefix';
+import { MainTestSub as MF5 } from '../structure/inherits_example';
 
 describe('End to End', () => {
 
@@ -95,6 +96,22 @@ describe('End to End', () => {
             data: 'bar'
         });
         expect(responsePost.body).toStrictEqual({
+            data: 'bar'
+        });
+    });
+
+    test('When inheritance is defined for base and input, meet the expected flow', async () => {
+        const instance = App.init(
+            {
+                runServer: false
+            }
+        );
+        await instance.run([
+            MF5
+        ]);
+        const responseGet = await Supertest(instance.express)
+                            .get('/base/test');
+        expect(responseGet.body).toStrictEqual({
             data: 'bar'
         });
     });
