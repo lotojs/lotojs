@@ -75,7 +75,9 @@ export class Route{
             ...(outputs || []),
             ...(routeRef.prototype.metadata.output || [])
           ];
-          const interceptorRef = routeRef.prototype.metadata.interceptor || interceptor;
+          const interceptorRef = UtilRouter.normalizeInterceptorInherits(inherits) ||
+                                  routeRef.prototype.metadata.interceptor || 
+                                  interceptor;
           this._expressRef[value](
             path,
             (req, res) => {
@@ -513,6 +515,14 @@ export class UtilRouter{
       }
       return acum;
     });
+  }
+
+  public static normalizeInterceptorInherits(inherits : PackageOptionsInherits[]){
+    const inheritsRef = inherits || [];
+    const result = inheritsRef.filter((value, index) => {
+      return value.includeBase === true && value.package.prototype.metadata.interceptor;
+    });
+    return result[0]?.package?.prototype?.metadata?.interceptor;
   }
 
 }
