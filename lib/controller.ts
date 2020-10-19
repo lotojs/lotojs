@@ -566,6 +566,11 @@ export function DefineMiddleware(pattern : MiddlewarePattern = MiddlewarePattern
         pattern
       },
     };
+    switch(pattern){
+      case MiddlewarePattern.Singleton:
+        Singleton(fn);
+      break;
+    }
   }
 }
 
