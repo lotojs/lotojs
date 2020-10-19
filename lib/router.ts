@@ -6,6 +6,7 @@ import {
 } from 'http-status-codes';
 import { Container } from 'typescript-ioc';
 import { PackageOptions, PackageOptionsInherits } from './package';
+import { ContextRoute, RequestAction, ResponseAction } from './types';
 
 export class Router{
 
@@ -526,15 +527,3 @@ export class UtilRouter{
   }
 
 }
-
-export interface ContextRoute{
-  id: string,
-  next: boolean,
-  input: any,
-  save: any,
-  params: any,
-  exception: any
-}
-
-export type RequestAction = Express.Request;
-export type ResponseAction = Express.Response;

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { nanoid } from 'nanoid';
 import { Singleton } from 'typescript-ioc'
-import { ContextRoute, RequestAction, ResponseAction } from './router';
+import { ContextRoute, MiddlewarePattern } from "./types";
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -543,14 +543,6 @@ export function Obtain(
 
 /********************* */
 
-export interface Middleware{
-  middleware(req, res, next, context) : any
-}
-
-export enum MiddlewarePattern{
-  Singleton
-}
-
 export function DefineMiddleware(pattern : MiddlewarePattern = MiddlewarePattern.Singleton){
   return (target : any, name : string, fn : any) => {
     fn = (typeof fn === 'function') ? fn : fn.value;
@@ -579,13 +571,3 @@ export function DefineMiddleware(pattern : MiddlewarePattern = MiddlewarePattern
 
 
 /******************** */
-
-interface ActionInterface<T, U, Y> {
-  Request : T,
-  Response : U,
-  Context: {
-    obtain: Y
-  }
-}
-
-export type Action<T = RequestAction, U = ResponseAction, Y = any> = ActionInterface<T, U, Y>
