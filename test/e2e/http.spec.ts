@@ -6,6 +6,7 @@ import { MainTest as MF2 } from '../structure/simple_output';
 import { MainTest as MF3 } from '../structure/multiple_methods';
 import { MainTest as MF4 } from '../structure/simple_prefix';
 import { MainTestSub as MF5 } from '../structure/inherits_example';
+import { MainTest as MF6 } from '../structure/middleware_basic';
 
 describe('End to End', () => {
 
@@ -113,6 +114,22 @@ describe('End to End', () => {
                             .get('/base/test');
         expect(responseGet.body).toStrictEqual({
             data: 'bar'
+        });
+    });
+
+    test('When running custom middleware, meet expected flow', async () => {
+        const instance = App.init(
+            {
+                runServer: false
+            }
+        );
+        await instance.run([
+            MF6
+        ]);
+        const responseGet = await Supertest(instance.express)
+                            .get('/test');
+        expect(responseGet.body).toStrictEqual({
+            data: 'customvalue'
         });
     });
 

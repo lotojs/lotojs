@@ -550,8 +550,8 @@ export function Obtain(
 /********************* */
 
 export function DefineMiddleware(pattern : MiddlewarePattern = MiddlewarePattern.Singleton){
-  return (target : any, name : string, fn : any) => {
-    fn = (typeof fn === 'function') ? fn : fn.value;
+  return (target : any) => {
+    const fn = target;
     const hasMetadata = Object.prototype.hasOwnProperty.call(
       fn.prototype, 
       'metadata'
