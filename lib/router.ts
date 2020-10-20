@@ -186,40 +186,14 @@ export class RouteRequest{
     this.context.input = this.req;
     for(const key in getInputs){
       const inputRef = getInputs[key];
-      if(inputRef.prototype.metadata?.middleware){
-        const pattern = inputRef.prototype.metadata.middleware.pattern;
-        switch(pattern){
-          case MiddlewarePattern.Singleton:
-            const middlewareRef = Container.get<Middleware>(
-              inputRef
-            );
-            await middlewareRef.middleware(
-              this.req, this.res, this.next, this.context
-            );
-          break;
-        }
-      }else if(UtilRouter.isHook(inputRef)){
-        await inputRef.apply(this._contextLocal, [
-          this.req, 
-          this.res, 
-          this.next, 
-          this.context
-        ]);
-        // switch(inputRef.prototype.metadata.action){
-        //   case 'none':
-        //     await inputRef(this.req, this.res, this.next, this.context);
-        //   break;
-        //   case 'save':
-        //     const result = await inputRef(this.req, this.res, this.next, this.context);
-        //     this.context.save = {
-        //       ...this.context.save,
-        //       ...result
-        //     }
-        //   break;
-        // }
-      }else{
-        await inputRef(this.req, this.res, this.next, this.context);
-      }
+      await UtilRouter.recursiveContext(
+        inputRef,
+        this.req,
+        this.res,
+        this.next,
+        this.context,
+        this.contextLocal
+      );
       if(!this.contextLocal.next){
         return;
       }
@@ -279,40 +253,14 @@ export class RouteRequest{
     this.context.input = this._returnValue;
     for(const key in getOutputs){
       const inputRef = getOutputs[key];
-      if(inputRef.prototype.metadata?.middleware){
-        const pattern = inputRef.prototype.metadata.middleware.pattern;
-        switch(pattern){
-          case MiddlewarePattern.Singleton:
-            const middlewareRef = Container.get<Middleware>(
-              inputRef
-            );
-            await middlewareRef.middleware(
-              this.req, this.res, this.next, this.context
-            );
-          break;
-        }
-      }else if(UtilRouter.isHook(inputRef)){
-        await inputRef.apply(this._contextLocal, [
-          this.req, 
-          this.res, 
-          this.next, 
-          this.context
-        ]);
-        // switch(inputRef.prototype.metadata.action){
-        //   case 'none':
-        //     await inputRef(this.req, this.res, this.next, this.context);
-        //   break;
-        //   case 'save':
-        //     const result = await inputRef(this.req, this.res, this.next, this.context);
-        //     this.context.save = {
-        //       ...this.context.save,
-        //       ...result
-        //     }
-        //   break;
-        // }
-      }else{
-        await inputRef(this.req, this.res, this.next, this.context);
-      }
+      await UtilRouter.recursiveContext(
+        inputRef,
+        this.req,
+        this.res,
+        this.next,
+        this.context,
+        this.contextLocal
+      );
       if(!this.contextLocal.next){
         return;
       }
@@ -370,6 +318,38 @@ export class RouteRequest{
 }
 
 export class UtilRouter{
+
+  public static async recursiveContext(
+    fn: any,
+    req: any,
+    res: any,
+    next: any,
+    context: any,
+    contextLocal? : any
+  ){
+    const inputRef = fn;
+    if(inputRef.prototype.metadata?.middleware){
+      const pattern = inputRef.prototype.metadata.middleware.pattern;
+      switch(pattern){
+        case MiddlewarePattern.Singleton:
+          const middlewareRef = Container.get<Middleware>(
+            inputRef
+          );
+          return await middlewareRef.middleware(
+            req, res, next, context
+          );
+      }
+    }else if(UtilRouter.isHook(inputRef)){
+      return await inputRef.apply(contextLocal, [
+        req, 
+        res, 
+        next, 
+        context
+      ]);
+    }else{
+      return await inputRef(req, res, next, context);
+    }
+  }
 
   public static isRoute(fn : any){
     return typeof fn === 'function' &&

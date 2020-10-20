@@ -1,6 +1,6 @@
 import { Controller, Get, Input, Obtain, Pipe, Request, Response, Save } from "../../lib/controller";
 import { Package } from "../../lib/package";
-import { ContextRoute } from "../../lib/router";
+import { ContextRoute } from "../../lib/types";
 
 @Controller()
 export class TestController{

@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { nanoid } from 'nanoid';
 import { Singleton } from 'typescript-ioc'
 import { ContextRoute, ContextRouteLocal, MiddlewarePattern } from "./types";
+import { UtilRouter } from "./router";
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -482,7 +483,7 @@ export function Pipe(
     let result;
     for(const key in fns){
       const fnRef = fns[key];
-      result = await fnRef(req, res, next, context);
+      result = await UtilRouter.recursiveContext(fnRef, req, res, next, context, self);
       if(!self.next){
         return;
       }
@@ -501,7 +502,7 @@ export function Save(
 ){
   const execute = async function(req, res, next, context : ContextRoute){
     const self : ContextRouteLocal = this;
-    const result = await fn(req, res, next, context);
+    const result = await UtilRouter.recursiveContext(fn, req, res, next, context, self);
     if(!self.next){
       return;
     }
@@ -522,7 +523,7 @@ export function Params(
   const execute = async function(req, res, next, context : ContextRoute){
     const self : ContextRouteLocal = this;
     context.params = params;
-    const result = await fn(req, res, next, context);
+    const result = await UtilRouter.recursiveContext(fn, req, res, next, context, self);
     if(!self.next){
       return;
     }

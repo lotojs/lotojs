@@ -1,7 +1,7 @@
 import * as morgan from 'morgan';
 import { ContextSave, Controller, Get, Input, Obtain, Pipe, Request, Response, Save } from "../../lib/controller";
 import { Package } from "../../lib/package";
-import { ContextRoute } from "../../lib/router";
+import { ContextRoute } from "../../lib/types";
 
 @Controller()
 export class TestController{
@@ -10,6 +10,7 @@ export class TestController{
         [
             Obtain('foo'),
             (req, res, next, context : ContextRoute) => {
+                console.log(context, "lala")
                 req.app.foo = context.input + '+';
                 next();
             }
