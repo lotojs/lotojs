@@ -373,9 +373,8 @@ describe('Route Request', () => {
       await instance.execute();
       expect(instance.context).toHaveProperty('id', route.prototype.metadata.id);
       expect(instance.context).toHaveProperty('input', {});
-      expect(instance.context).toHaveProperty('next', false);
-      expect(instance.context).toHaveProperty('save', {});
       expect(instance.context).toHaveProperty('params', {});
+      expect(instance.context).toHaveProperty('exception', null);
     });
 
   });
