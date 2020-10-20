@@ -166,8 +166,6 @@ export class RouteRequest{
     this._context = {
       id: this.route.prototype.metadata.id,
       input: null,
-      // next: false,
-      // save: {},
       params: {},
       exception: null
     };

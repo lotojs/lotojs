@@ -4,9 +4,7 @@ import * as Express from 'express';
 
 export interface ContextRoute{
     id: string,
-    // next: boolean,
     input: any,
-    // save: any,
     params: any,
     exception: any
 }
