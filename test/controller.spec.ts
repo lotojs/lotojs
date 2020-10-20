@@ -1,6 +1,6 @@
 import { Container, Singleton } from "typescript-ioc";
 import { Controller, Get, Patch, Delete, Put, Post, Input, Output, Hook, Pipe, Save, Params, Response, Obtain, Request, Body, Header, Parameters, In, ContextSave } from "../lib/controller";
-import { ContextRoute } from "../lib/router";
+import { ContextRoute } from "../lib/types";
 
 describe('@Controller', () => {
 
@@ -207,20 +207,22 @@ describe('@Pipe', () => {
   test('When the @Hook is inserted with multiple functions, pass data between them', async () => {
     const req : any = {};
     const middleware1 = (req, res, next, context : ContextRoute) => {
+      next();
       return 1;
     }
     const middleware2 = (req, res, next, context : ContextRoute) => {
+      next();
       req.check = context.input + 1;
     }
     const setPipe = Pipe([
       middleware1,
       middleware2
     ]);
-    await setPipe(req, {}, () => {}, {
+    await setPipe.call({
+      next: true
+    }, req, {}, () => {}, {
       id: 'randomid',
       input: null,
-      next: true,
-      save: {},
       params: null,
       exception: null
     });
@@ -242,15 +244,17 @@ describe('@Save', () => {
       middleware1,
       'my-save'
     );
-    const result = await setSave(req, {}, () => {}, {
+    let objContext = {
+      next: true,
+      save: {}
+    }
+    const result = await setSave.call(objContext, req, {}, () => {}, {
       id: 'randomid',
       input: null,
-      next: true,
-      save: {},
       params: null,
       exception: null
     });
-    expect(result).toStrictEqual({
+    expect(objContext.save).toStrictEqual({
       'my-save': 1
     });
   });
@@ -270,11 +274,11 @@ describe('@Params', () => {
         'foo': 'bar'
       }
     );
-    await setParams(req, {}, () => {}, {
+    await setParams.call({
+      next: true
+    }, req, {}, () => {}, {
       id: 'randomid',
       input: null,
-      next: true,
-      save: {},
       params: null,
       exception: null
     });
@@ -292,13 +296,14 @@ describe('@Obtain', () => {
   test('When @Obtain is inserted, return object with the key selected', async () => {
     const req : any = {};
     const setObtain = Obtain('my-save');
-    const result = await setObtain(req, {}, () => {}, {
-      id: 'randomid',
-      input: null,
+    const result = await setObtain.call({
       next: true,
       save: {
         'my-save': 1
-      },
+      }
+    }, req, {}, () => {}, {
+      id: 'randomid',
+      input: null,
       params: null,
       exception: null
     });

@@ -4,9 +4,9 @@ import * as Express from 'express';
 
 export interface ContextRoute{
     id: string,
-    next: boolean,
+    // next: boolean,
     input: any,
-    save: any,
+    // save: any,
     params: any,
     exception: any
 }
@@ -33,3 +33,10 @@ export interface Middleware{
 export enum MiddlewarePattern{
     Singleton
 }
+
+export interface ContextRouteLocalInterface{
+    save: any,
+    next: boolean
+}
+
+export type ContextRouteLocal = ContextRouteLocalInterface;

@@ -6,7 +6,7 @@ import {
 } from 'http-status-codes';
 import { Container } from 'typescript-ioc';
 import { PackageOptions, PackageOptionsInherits } from './package';
-import { ContextRoute, RequestAction, ResponseAction } from './types';
+import { ContextRoute, ContextRouteLocal, Middleware, MiddlewarePattern, RequestAction, ResponseAction } from './types';
 
 export class Router{
 
@@ -136,6 +136,7 @@ export class Route{
 export class RouteRequest{
 
   private _context : ContextRoute;
+  private _contextLocal : ContextRouteLocal;
   private _next : () => void;
   private _returnValue : any;
 
@@ -165,16 +166,20 @@ export class RouteRequest{
     this._context = {
       id: this.route.prototype.metadata.id,
       input: null,
-      next: false,
-      save: {},
+      // next: false,
+      // save: {},
       params: {},
       exception: null
     };
+    this._contextLocal = {
+      save: {},
+      next: false,
+    }
   }
 
   private initNext(){
     this._next = () => {
-      this.context.next = true;
+      this.contextLocal.next = true;
     }
   }
 
@@ -183,35 +188,44 @@ export class RouteRequest{
     this.context.input = this.req;
     for(const key in getInputs){
       const inputRef = getInputs[key];
-      if(!(typeof inputRef === 'function')){
-        continue;
-      }
-      if(inputRef.prototype.metadata){
-        const isHook = UtilRouter.isHook(
-          inputRef
-        );
-        if(!isHook){
-          continue;
-        }
-        switch(inputRef.prototype.metadata.action){
-          case 'none':
-            await inputRef(this.req, this.res, this.next, this.context);
-          break;
-          case 'save':
-            const result = await inputRef(this.req, this.res, this.next, this.context);
-            this.context.save = {
-              ...this.context.save,
-              ...result
-            }
+      if(inputRef.prototype.metadata?.middleware){
+        const pattern = inputRef.prototype.metadata.middleware.pattern;
+        switch(pattern){
+          case MiddlewarePattern.Singleton:
+            const middlewareRef = Container.get<Middleware>(
+              inputRef
+            );
+            await middlewareRef.middleware(
+              this.req, this.res, this.next, this.context
+            );
           break;
         }
+      }else if(UtilRouter.isHook(inputRef)){
+        await inputRef.apply(this._contextLocal, [
+          this.req, 
+          this.res, 
+          this.next, 
+          this.context
+        ]);
+        // switch(inputRef.prototype.metadata.action){
+        //   case 'none':
+        //     await inputRef(this.req, this.res, this.next, this.context);
+        //   break;
+        //   case 'save':
+        //     const result = await inputRef(this.req, this.res, this.next, this.context);
+        //     this.context.save = {
+        //       ...this.context.save,
+        //       ...result
+        //     }
+        //   break;
+        // }
       }else{
         await inputRef(this.req, this.res, this.next, this.context);
       }
-      if(!this.context.next){
+      if(!this.contextLocal.next){
         return;
       }
-      this.context.next = false;
+      this.contextLocal.next = false;
     }
   }
 
@@ -243,11 +257,11 @@ export class RouteRequest{
         break;
         case 'context':
           ref = {
-            save: this.context.save
+            save: this.contextLocal.save
           }
         break;
         case 'contextsave':
-          ref = this.context.save[param.key]
+          ref = this.contextLocal.save[param.key]
         break;
       }
       paramsArray.push(
@@ -267,35 +281,44 @@ export class RouteRequest{
     this.context.input = this._returnValue;
     for(const key in getOutputs){
       const inputRef = getOutputs[key];
-      if(!(typeof inputRef === 'function')){
-        continue;
-      }
-      if(inputRef.prototype.metadata){
-        const isHook = UtilRouter.isHook(
-          inputRef
-        );
-        if(!isHook){
-          continue;
-        }
-        switch(inputRef.prototype.metadata.action){
-          case 'none':
-            await inputRef(this.req, this.res, this.next, this.context);
-          break;
-          case 'save':
-            const result = await inputRef(this.req, this.res, this.next, this.context);
-            this.context.save = {
-              ...this.context.save,
-              ...result
-            }
+      if(inputRef.prototype.metadata?.middleware){
+        const pattern = inputRef.prototype.metadata.middleware.pattern;
+        switch(pattern){
+          case MiddlewarePattern.Singleton:
+            const middlewareRef = Container.get<Middleware>(
+              inputRef
+            );
+            await middlewareRef.middleware(
+              this.req, this.res, this.next, this.context
+            );
           break;
         }
+      }else if(UtilRouter.isHook(inputRef)){
+        await inputRef.apply(this._contextLocal, [
+          this.req, 
+          this.res, 
+          this.next, 
+          this.context
+        ]);
+        // switch(inputRef.prototype.metadata.action){
+        //   case 'none':
+        //     await inputRef(this.req, this.res, this.next, this.context);
+        //   break;
+        //   case 'save':
+        //     const result = await inputRef(this.req, this.res, this.next, this.context);
+        //     this.context.save = {
+        //       ...this.context.save,
+        //       ...result
+        //     }
+        //   break;
+        // }
       }else{
         await inputRef(this.req, this.res, this.next, this.context);
       }
-      if(!this.context.next){
+      if(!this.contextLocal.next){
         return;
       }
-      this.context.next = false;
+      this.contextLocal.next = false;
       this.context.input = this._returnValue;
     }
   }
@@ -340,6 +363,10 @@ export class RouteRequest{
 
   public get context(){
     return this._context;
+  }
+
+  public get contextLocal(){
+    return this._contextLocal;
   }
 
 }

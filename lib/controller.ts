@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { nanoid } from 'nanoid';
 import { Singleton } from 'typescript-ioc'
-import { ContextRoute, MiddlewarePattern } from "./types";
+import { ContextRoute, ContextRouteLocal, MiddlewarePattern } from "./types";
 
 export function Controller(path : string = null){
   return (target : any) => {
@@ -477,12 +477,13 @@ export function Hook(action? : 'none' | 'save'){
 export function Pipe(
   fns : any[]
 ){
-  const execute = async (req, res, next, context : ContextRoute) => {
+  const execute = async function(req, res, next, context : ContextRoute){
+    const self : ContextRouteLocal = this;
     let result;
     for(const key in fns){
       const fnRef = fns[key];
       result = await fnRef(req, res, next, context);
-      if(!context.next){
+      if(!self.next){
         return;
       }
       context.input = result;
@@ -498,14 +499,16 @@ export function Save(
   fn : any,
   key : string
 ){
-  const execute = async (req, res, next, context : ContextRoute) => {
+  const execute = async function(req, res, next, context : ContextRoute){
+    const self : ContextRouteLocal = this;
     const result = await fn(req, res, next, context);
-    if(!context.next){
+    if(!self.next){
       return;
     }
-    return {
+    self.save = {
+      ...self.save,
       [key]: result
-    };
+    }
   };
   const setHook = Hook('save');
   setHook(undefined, undefined, execute);
@@ -516,10 +519,11 @@ export function Params(
   fn : any,
   params : any
 ){
-  const execute = async (req, res, next, context : ContextRoute) => {
+  const execute = async function(req, res, next, context : ContextRoute){
+    const self : ContextRouteLocal = this;
     context.params = params;
     const result = await fn(req, res, next, context);
-    if(!context.next){
+    if(!self.next){
       return;
     }
     return result;
@@ -532,9 +536,10 @@ export function Params(
 export function Obtain(
   key : string,
 ){
-  const execute = async (req, res, next, context : ContextRoute) => {
+  const execute = async function(req, res, next, context : ContextRoute){
+    const self : ContextRouteLocal = this;
     next();
-    return context.save[key];
+    return self.save[key];
   };
   const setHook = Hook();
   setHook(undefined, undefined, execute);
