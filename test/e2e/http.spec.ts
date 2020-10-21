@@ -8,6 +8,7 @@ import { MainTest as MF4 } from '../structure/simple_prefix';
 import { MainTestSub as MF5 } from '../structure/inherits_example';
 import { MainTest as MF6 } from '../structure/middleware_basic';
 import { MainTest as MF7 } from '../structure/basic_imports';
+import { MainTest as MF8 } from '../structure/basic_interceptor';
 
 describe('End to End', () => {
 
@@ -155,6 +156,23 @@ describe('End to End', () => {
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
             data: 'bar'
+        });
+    });
+
+    test('When execute exception with interceptor, meet expected flow', async () => {
+        const instance = App.init(
+            [
+                MF8
+            ],
+            {
+                runServer: false
+            }
+        );
+        await instance.run();
+        const responseGet = await Supertest(instance.express)
+                            .get('/test');
+        expect(responseGet.body).toStrictEqual({
+            message: 'My fatal error'
         });
     });
 
