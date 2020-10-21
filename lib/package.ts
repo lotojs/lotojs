@@ -32,7 +32,7 @@ export function Package(packageOptions: PackageOptions) {
       inputs: packageOptions.inputs || [],
       outputs: packageOptions.outputs || [],
       interceptor: packageOptions.interceptor,
-      inherits: packageOptions.inherits,
+      inherits: packageOptions.inherits || [],
       joins: packageOptions.joins || [],
     };
   };

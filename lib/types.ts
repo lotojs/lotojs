@@ -12,24 +12,20 @@ export interface ContextRoute {
 export type RequestAction = Express.Request;
 export type ResponseAction = Express.Response;
 
-interface ActionInterface<T, U, Y> {
-  Request: T;
-  Response: U;
-  Context: {
-    obtain: Y;
-  };
+export namespace Action{
+  export type Request = RequestAction;
+  export type Response = ResponseAction;
 }
-
-export type Action<
-  T = RequestAction,
-  U = ResponseAction,
-  Y = any
-> = ActionInterface<T, U, Y>;
 
 /********* Middleware */
 
 export interface Middleware {
-  middleware(req, res, next, context): any;
+  middleware(
+    req : RequestAction, 
+    res : ResponseAction, 
+    next : () => void, 
+    context : ContextRoute
+  ): any;
 }
 
 export enum MiddlewarePattern {

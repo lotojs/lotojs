@@ -1,5 +1,6 @@
 import { Controller, Get, Input, Request, Response } from "../../lib/controller";
 import { Package } from "../../lib/package";
+import { Action, ActionInterface } from "../../lib/types";
 
 @Controller()
 export class TestController{
@@ -10,12 +11,12 @@ export class TestController{
     @Get("/test")
     test(
         @Response()
-        res : any,
+        res : Action.Response,
         @Request()
-        req : any
+        req : Action.Request
     ){
         res.json({
-            data: req.app.foo
+            data: (req.app as any).foo
         });
     }
 
