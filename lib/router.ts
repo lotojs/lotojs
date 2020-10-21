@@ -16,10 +16,23 @@ export class Router {
   private _expressRef: Express.Express = Express();
 
   public loadRoutes(packages: any[]) {
-    packages.forEach((value, index) => {
+    const routeAction = (value) => {
       const instance = new Route(this._expressRef);
       instance.setPackage(value);
       instance.load();
+    }
+    const iterateJoins = (joins : any[] = []) => {
+      if(joins.length === 0){
+        return;
+      }
+      joins.forEach((value) => {
+        iterateJoins(value.prototype.metadata.joins);
+        routeAction(value);
+      });
+    }
+    packages.forEach((value) => {
+      iterateJoins(value.prototype.metadata.joins);
+      routeAction(value);
     });
   }
 

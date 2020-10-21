@@ -7,6 +7,7 @@ import { MainTest as MF3 } from '../structure/multiple_methods';
 import { MainTest as MF4 } from '../structure/simple_prefix';
 import { MainTestSub as MF5 } from '../structure/inherits_example';
 import { MainTest as MF6 } from '../structure/middleware_basic';
+import { MainTest as MF7 } from '../structure/basic_imports';
 
 describe('End to End', () => {
 
@@ -130,6 +131,22 @@ describe('End to End', () => {
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
             data: 'customvalue'
+        });
+    });
+
+    test('When execute package with joins, meet expected flow', async () => {
+        const instance = App.init(
+            {
+                runServer: false
+            }
+        );
+        await instance.run([
+            MF7
+        ]);
+        const responseGet = await Supertest(instance.express)
+                            .get('/test');
+        expect(responseGet.body).toStrictEqual({
+            data: 'bar'
         });
     });
 

@@ -17,6 +17,7 @@ export interface PackageOptions {
   outputs?: ((...args: any[]) => any)[];
   interceptor?: (...args: any[]) => any;
   inherits?: PackageOptionsInherits[];
+  joins?: { new (...args: any[]) }[]
 }
 
 export function Package(packageOptions: PackageOptions) {
@@ -32,6 +33,7 @@ export function Package(packageOptions: PackageOptions) {
       outputs: packageOptions.outputs || [],
       interceptor: packageOptions.interceptor,
       inherits: packageOptions.inherits,
+      joins: packageOptions.joins || [],
     };
   };
 }
