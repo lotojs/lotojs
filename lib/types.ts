@@ -34,6 +34,7 @@ export interface Middleware {
 
 export enum MiddlewarePattern {
   Singleton,
+  ByRequest
 }
 
 export interface ContextRouteLocalInterface {

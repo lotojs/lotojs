@@ -313,8 +313,11 @@ export class UtilRouter {
       const pattern = inputRef.prototype.metadata.middleware.pattern;
       switch (pattern) {
         case MiddlewarePattern.Singleton:
-          const middlewareRef = Container.get<Middleware>(inputRef);
-          return await middlewareRef.middleware(req, res, next, context);
+          return await (Container.get<Middleware>(inputRef))
+                          .middleware(req, res, next, context);
+        case MiddlewarePattern.ByRequest:
+          return await (new inputRef())
+                          .middleware(req, res, next, context);
       }
     } else if (UtilRouter.isHook(inputRef)) {
       return await inputRef.apply(contextLocal, [req, res, next, context]);
