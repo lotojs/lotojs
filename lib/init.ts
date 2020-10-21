@@ -3,8 +3,14 @@ import * as Https from "https";
 import { Router } from "./router";
 
 export abstract class App {
-  public static init(options: AppLoadOptions = {}) {
-    return new AppLoader(options);
+  public static init(
+    packages: { new (...args: any[]) }[],
+    options: AppLoadOptions = {}
+  ) {
+    return new AppLoader(
+      packages,
+      options
+    );
   }
 }
 
@@ -27,11 +33,17 @@ export class AppLoader {
   private _serverHttp: any;
   private _serverHttps: any;
 
-  constructor(private _options: AppLoadOptions) {
+  constructor(
+    private _packages: { new (...args: any[]) }[],
+    private _options: AppLoadOptions
+  ) {
     this.setDefaultOptions();
     this.setHttp();
     this.setHttps();
     this._router = new Router();
+    this._router.loadRoutes(
+      this._packages
+    );
   }
 
   private setDefaultOptions() {
@@ -47,8 +59,7 @@ export class AppLoader {
     };
   }
 
-  public async run(packages: { new (...args: any[]) }[]) {
-    this._router.loadRoutes(packages);
+  public async run() {
     this.runServer();
   }
 

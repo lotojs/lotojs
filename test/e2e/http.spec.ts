@@ -13,13 +13,14 @@ describe('End to End', () => {
 
     test('When rendering in the routing method, from an input method', async () => {
         const instance = App.init(
+            [
+                BF,
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            BF,
-        ]);
+        await instance.run();
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
@@ -29,13 +30,14 @@ describe('End to End', () => {
 
     test('When entering an inflow with Pipe, it is visible in the routing method', async () => {
         const instance = App.init(
+            [
+                MF1
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF1
-        ]);
+        await instance.run();
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
@@ -46,13 +48,14 @@ describe('End to End', () => {
 
     test('When an output is entered that renders from the return of an object', async () => {
         const instance = App.init(
+            [
+                MF2
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF2
-        ]);
+        await instance.run();
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
@@ -62,13 +65,14 @@ describe('End to End', () => {
 
     test('When a route has multiple verbs, respond to them in the same way', async () => {
         const instance = App.init(
+            [
+                MF3
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF3
-        ]);
+        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         const responsePost = await Supertest(instance.express)
@@ -83,13 +87,14 @@ describe('End to End', () => {
 
     test('When a route has prefix, find route', async () => {
         const instance = App.init(
+            [
+                MF4
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF4
-        ]);
+        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/base/test');
         const responsePost = await Supertest(instance.express)
@@ -104,13 +109,14 @@ describe('End to End', () => {
 
     test('When inheritance is defined for base and input, meet the expected flow', async () => {
         const instance = App.init(
+            [
+                MF5
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF5
-        ]);
+        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/base/test');
         expect(responseGet.body).toStrictEqual({
@@ -120,13 +126,14 @@ describe('End to End', () => {
 
     test('When running custom middleware, meet expected flow', async () => {
         const instance = App.init(
+            [
+                MF6
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF6
-        ]);
+        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
@@ -136,13 +143,14 @@ describe('End to End', () => {
 
     test('When execute package with joins, meet expected flow', async () => {
         const instance = App.init(
+            [
+                MF7
+            ],
             {
                 runServer: false
             }
         );
-        await instance.run([
-            MF7
-        ]);
+        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({

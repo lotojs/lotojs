@@ -1,6 +1,6 @@
 import { Controller, Get, Input, Request, Response } from "../../lib/controller";
 import { Package } from "../../lib/package";
-import { Action, ActionInterface } from "../../lib/types";
+import { Action } from "../../lib/types";
 
 @Controller()
 export class TestController{
