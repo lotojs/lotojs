@@ -164,7 +164,13 @@ export class RouteRequest {
       await this.executeRoute();
       await this.executeOutputs();
     } catch (e) {
-      await this.executeInterceptor(e);
+      try{
+        await this.executeInterceptor(e);
+      }catch(e){
+        this.res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+      }
     }
   }
 
