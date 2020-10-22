@@ -17,11 +17,7 @@ describe('End to End', () => {
             [
                 BF,
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
@@ -34,11 +30,7 @@ describe('End to End', () => {
             [
                 MF1
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
@@ -52,11 +44,7 @@ describe('End to End', () => {
             [
                 MF2
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const response = await Supertest(instance.express)
                             .get('/test');
         expect(response.body).toStrictEqual({
@@ -69,11 +57,7 @@ describe('End to End', () => {
             [
                 MF3
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         const responsePost = await Supertest(instance.express)
@@ -91,11 +75,7 @@ describe('End to End', () => {
             [
                 MF4
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/base/test');
         const responsePost = await Supertest(instance.express)
@@ -113,11 +93,7 @@ describe('End to End', () => {
             [
                 MF5
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/base/test');
         expect(responseGet.body).toStrictEqual({
@@ -130,11 +106,7 @@ describe('End to End', () => {
             [
                 MF6
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
@@ -147,11 +119,7 @@ describe('End to End', () => {
             [
                 MF7
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
@@ -164,11 +132,7 @@ describe('End to End', () => {
             [
                 MF8
             ],
-            {
-                runServer: false
-            }
         );
-        await instance.run();
         const responseGet = await Supertest(instance.express)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
