@@ -5,8 +5,6 @@ import {
   Header,
   Hook,
   In,
-  Input,
-  Output,
   Parameters,
   Query,
   Request,

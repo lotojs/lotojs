@@ -12,14 +12,14 @@ describe("App", () => {
 
   test(`When 'run' is called, load all packages`, async () => {
     const instance = App.init([MainTest]);
-    instance.express._router.stack.forEach((value) => {
+    instance.app._router.stack.forEach((value) => {
       if (value.route) expect(value.route.path).toBe("/test");
     });
   });
 
   test(`When 'run' is called, load all packages with base defined`, async () => {
     const instance = App.init([MainTestBase]);
-    instance.express._router.stack.forEach((value) => {
+    instance.app._router.stack.forEach((value) => {
       if (value.route)
         expect(value.route.path).toBe("/mybase/mycontroller/test");
     });

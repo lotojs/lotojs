@@ -18,7 +18,7 @@ describe('End to End', () => {
                 BF,
             ],
         );
-        const response = await Supertest(instance.express)
+        const response = await Supertest(instance.app)
                             .get('/test');
         expect(response.body).toStrictEqual({
             data: 'bar'
@@ -31,7 +31,7 @@ describe('End to End', () => {
                 MF1
             ],
         );
-        const response = await Supertest(instance.express)
+        const response = await Supertest(instance.app)
                             .get('/test');
         expect(response.body).toStrictEqual({
             data: 'bar+',
@@ -45,7 +45,7 @@ describe('End to End', () => {
                 MF2
             ],
         );
-        const response = await Supertest(instance.express)
+        const response = await Supertest(instance.app)
                             .get('/test');
         expect(response.body).toStrictEqual({
             data: 'bar'
@@ -58,9 +58,9 @@ describe('End to End', () => {
                 MF3
             ],
         );
-        const responseGet = await Supertest(instance.express)
+        const responseGet = await Supertest(instance.app)
                             .get('/test');
-        const responsePost = await Supertest(instance.express)
+        const responsePost = await Supertest(instance.app)
                             .post('/test');
         expect(responseGet.body).toStrictEqual({
             data: 'bar'
@@ -76,9 +76,9 @@ describe('End to End', () => {
                 MF4
             ],
         );
-        const responseGet = await Supertest(instance.express)
+        const responseGet = await Supertest(instance.app)
                             .get('/base/test');
-        const responsePost = await Supertest(instance.express)
+        const responsePost = await Supertest(instance.app)
                             .post('/base/test');
         expect(responseGet.body).toStrictEqual({
             data: 'bar'
@@ -94,7 +94,7 @@ describe('End to End', () => {
                 MF5
             ],
         );
-        const responseGet = await Supertest(instance.express)
+        const responseGet = await Supertest(instance.app)
                             .get('/base/test');
         expect(responseGet.body).toStrictEqual({
             data: 'bar'
@@ -107,7 +107,7 @@ describe('End to End', () => {
                 MF6
             ],
         );
-        const responseGet = await Supertest(instance.express)
+        const responseGet = await Supertest(instance.app)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
             data: 'customvalue'
@@ -120,7 +120,7 @@ describe('End to End', () => {
                 MF7
             ],
         );
-        const responseGet = await Supertest(instance.express)
+        const responseGet = await Supertest(instance.app)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
             data: 'bar'
@@ -133,7 +133,7 @@ describe('End to End', () => {
                 MF8
             ],
         );
-        const responseGet = await Supertest(instance.express)
+        const responseGet = await Supertest(instance.app)
                             .get('/test');
         expect(responseGet.body).toStrictEqual({
             message: 'My fatal error'

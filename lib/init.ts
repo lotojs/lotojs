@@ -56,7 +56,7 @@ export class AppLoader {
     return server;
   }
 
-  public get express() {
+  public get app() {
     return this._router.express;
   }
 }

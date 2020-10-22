@@ -20,5 +20,8 @@
     "morgan": "^1.10.0",
     "supertest": "^5.0.0",
     "ts-jest": "^26.4.1"
+  },
+  "scripts": {
+    "build": "tsc --p tsconfig.json"
   }
 }
