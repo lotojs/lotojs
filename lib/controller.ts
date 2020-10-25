@@ -4,7 +4,7 @@ import { Singleton } from "typescript-ioc";
 import { ContextRoute, ContextRouteLocal, MiddlewarePattern } from "./types";
 import { UtilRouter } from "./router";
 
-export function Controller(path: string = null) {
+export function Controller(options? : any) {
   return (target: any) => {
     const hasMetadata = Object.prototype.hasOwnProperty.call(
       target.prototype,
@@ -15,7 +15,7 @@ export function Controller(path: string = null) {
     const setMetadata = {
       type,
       route: {
-        path,
+        path: options.path || null,
       },
     };
     if (hasMetadata) {
