@@ -1,7 +1,9 @@
 import { Controller, Get } from "../../lib/controller";
 import { Package } from "../../lib/package";
 
-@Controller("/mycontroller/")
+@Controller({
+    path: "/mycontroller/"
+})
 export class TestController{
 
     @Get("/test")

@@ -56,7 +56,9 @@ describe("@Controller", () => {
   test("When the @Controller path has value, set path", () => {
     const obj = jest.fn();
     const path = "/test";
-    const controller = Controller("/test");
+    const controller = Controller({
+      path: "/test"
+    });
     controller(obj);
     expect(obj.prototype).toHaveProperty("metadata.route.path", path);
   });
