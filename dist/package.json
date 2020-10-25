@@ -1,6 +1,6 @@
 {
     "name": "@lottojs/core",
-    "description": "Library for controlling HTTP requests",
+    "description": "Library for build web and apis easily.",
     "version": "1.0.0",
     "main": "./lib/index.js",
     "license": "AGPL-3.0",
@@ -14,7 +14,8 @@
         "api",
         "package",
         "request",
-        "typescript"
+        "typescript",
+        "express"
     ],
     "dependencies": {
       "escape-string-regexp": "~4.0.0",
