@@ -1,5 +1,5 @@
 {
-    "name": "@lottojs/core",
+    "name": "@lotojs/core",
     "description": "Library for build web and apis easily.",
     "version": "1.0.0",
     "main": "./lib/index.js",
@@ -15,7 +15,8 @@
         "package",
         "request",
         "typescript",
-        "express"
+        "express",
+        "lotojs"
     ],
     "dependencies": {
       "escape-string-regexp": "~4.0.0",
